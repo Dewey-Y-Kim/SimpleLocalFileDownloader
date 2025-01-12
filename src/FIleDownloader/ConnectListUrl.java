@@ -27,15 +27,16 @@ public class ConnectListUrl {
         return connect;
     }
 
-    public static void readUrl(HttpURLConnection httpURLConnection) {
+    public static List<String > readUrl(HttpURLConnection httpURLConnection) {
+        List<String> result = null;
         try {
             if(httpURLConnection.getResponseCode() == 200) {
-                List<String> result = readResopnseData(httpURLConnection.getInputStream());
-                System.out.print(result);
+                result = readResopnseData(httpURLConnection.getInputStream());
             }
         } catch (IOException e){
             e.printStackTrace();
         }
+        return result;
     }
     // Read responseData to StringBuilder
     public static List<String> readResopnseData(InputStream inputStream) {
@@ -44,14 +45,18 @@ public class ConnectListUrl {
 //        StringBuilder stringBuilder = new StringBuilder();
         List<String> stringBuilder = new ArrayList<>();
         String line = "";
-        int idx = 1;
+        int idx = -1;
         String regex = "<div\\s+class";
 
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
              BufferedReader bufferedReader = new BufferedReader(inputStreamReader))
         {
             while( (line = bufferedReader.readLine()) != null) {
-                System.out.print(line.matches(regex));
+                idx++;
+                if (line.matches(regex)){
+                    System.out.println(idx);
+                }
+//                System.out.print(line.matches(regex));
                 //line 선처리 \t \s 제거
                 line.replaceAll("\\t\s","");
                 line.replaceAll("\\t","");
