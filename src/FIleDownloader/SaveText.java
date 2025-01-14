@@ -7,8 +7,8 @@ public class SaveText {
     String bodyText;
     String fullPath;
 
-    public SaveText(){
-    }
+//    public SaveText(){
+//    }
     public SaveText(String path, String bodyText){
         this.fullPath = path;
         this.bodyText = bodyText;
@@ -29,6 +29,8 @@ public class SaveText {
         }
         this.bodyText = bodyText.toString();
     }
+
+
     public void save(){
         //Text 파일 저장
         try {
