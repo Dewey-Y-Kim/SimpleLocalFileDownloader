@@ -62,7 +62,7 @@ public class ReadText {
         System.out.println(result.size());
         return result;
     }
-    private  List<String> getBody(String[] list){
+    public   List<String> getBody(String[] list){
         List<String> result = new ArrayList<>();
         String tempbody = "";
         for(String str : list){

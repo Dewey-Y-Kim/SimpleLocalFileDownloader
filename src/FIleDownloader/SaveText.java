@@ -6,24 +6,23 @@ import java.util.List;
 import static java.io.IO.println;
 
 public class SaveText {
-    String bodyText;
+    String bodyText ="";
     String fullPath;
     String defaultPath = new Downloader().downLoadPath;
+    String title;
 //    public SaveText(){
 //    }
-    public SaveText(String sb){
-        this.bodyText = sb;
-        this.fullPath = "/home/dewey/connectUrl.html";
+    public SaveText(String title){
+        this.fullPath = defaultPath+ title +"/"+ title +".txt";
+        this.title = title;
     }
-    public SaveText(String title, String bodyText){
-        this.fullPath = defaultPath + title;
-        this.bodyText = bodyText;
-    }
-    public SaveText(String title, List<String> bodyString){
-        this.fullPath = defaultPath + title;
-        this.bodyText = buildString(bodyString);
-
-    }
+//    public SaveText(String title, String bodyText){
+//        this.fullPath = defaultPath + title +"/" +title +".txt";
+//    }
+//    public SaveText(String title, List<String> bodyString){
+//        this.fullPath = defaultPath + title+"/";
+//        this.bodyText = buildString(bodyString);
+//    }
     public SaveText(String title, String chaptor, String bodyText){
         this.fullPath = chkPath(defaultPath + title + "/") + chaptor + ".txt";
         this.bodyText = bodyText;
@@ -51,46 +50,57 @@ public class SaveText {
         StringBuilder result = new StringBuilder();
         for(String str :bodyText){
             if(str.contains("<br>") || str.contains("<span>")) str = TagRemover(str);
+//            while(str.contains("  ")){
+//                str = str.replaceAll("  "," ");
+//            }
+            while (str.contains("\t")){
+                str = str.replaceAll("\t"," ");
+            }
             result.append(str).append("\n");
         }
         return result.toString();
     }
+    public void appendText( List<String> text){
+            this.bodyText += buildString(text);
+    }
     public void save(){
 
 //        //Text 파일 저장
-        try {
-             System.out.println(fullPath + " is starting");
-
-            OutputStream outputStream = new FileOutputStream(fullPath);
-            byte[] bytes = bodyText.getBytes();
-            outputStream.write(bytes);
-            outputStream.close();
-            System.out.println(fullPath + " is complete");
-        } catch (IOException e) {
-            System.out.println("Error occor  " + fullPath);
-
-            e.printStackTrace();
-        }
-//        // 1. 파일 객체 생성
-//        File file = new File(fullPath);
-//        // 2. 파일 존재여부 체크 및 생성
 //        try {
-//            System.out.println(fullPath + " is starting");
-//            if (!file.exists()) {
-//                    file.createNewFile();
-//            }
-//            // 3. Buffer를 사용해서 File에 write할 수 있는 BufferedWriter 생성
-//            FileWriter fw = new FileWriter(file);
-//            BufferedWriter writer = new BufferedWriter(fw);
-//            // 4. 파일에 쓰기
-//            writer.write(bodyText);
-//            // 5. BufferedWriter close
-//            writer.close();
+//             System.out.println(fullPath + " is starting");
+//
+//            OutputStream outputStream = new FileOutputStream(fullPath);
+//            byte[] bytes = bodyText.getBytes();
+//            outputStream.write(bytes);
+//            outputStream.close();
 //            System.out.println(fullPath + " is complete");
 //        } catch (IOException e) {
 //            System.out.println("Error occor  " + fullPath);
-//            throw new RuntimeException(e);
+//
+//            e.printStackTrace();
 //        }
+        // 1. 파일 객체 생성
+        File directory = new File(defaultPath+title);
+        directory.mkdirs();
+        File file = new File(fullPath);
+        // 2. 파일 존재여부 체크 및 생성
+        try {
+            System.out.println(fullPath + " is starting");
+            if (!file.exists()) {
+                    file.createNewFile();
+            }
+            // 3. Buffer를 사용해서 File에 write할 수 있는 BufferedWriter 생성
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(fw);
+            // 4. 파일에 쓰기
+            writer.write(bodyText);
+            // 5. BufferedWriter close
+            writer.close();
+            System.out.println(fullPath + " is complete");
+        } catch (IOException e) {
+            System.out.println("Error occor  " + fullPath);
+            throw new RuntimeException(e);
+        }
 
 
     }
@@ -100,6 +110,8 @@ public class SaveText {
                 .replaceAll("<br />","\n")
                 .replaceAll("<br/>","\n")
                 .replaceAll("<span>","")
+                .replaceAll("&gt;",">")
+                .replaceAll("&lt;","<")
                 .replaceAll("</span>","");
 //                .replaceAll("<(.*?)>", "");
         return str;
