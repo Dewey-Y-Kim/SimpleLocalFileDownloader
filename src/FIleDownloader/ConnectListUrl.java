@@ -5,12 +5,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectListUrl {
-    public static HttpURLConnection openConnect(String address) throws IOException {
+    private HttpURLConnection conection;
+    private String address;
+    private List<String> result;
+
+    public List<String> getResult(){
+        return result;
+    }
+
+    public ConnectListUrl(String address) throws IOException {
+        this.address = address;
+        this.result = openConnect();
+    }
+
+    public List<String> openConnect() throws IOException {
+
         URL url = new URL(address);
         HttpURLConnection connect = null;
 
@@ -22,51 +37,67 @@ public class ConnectListUrl {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(connect.getResponseCode());
-        System.out.println(connect.getResponseMessage());
-        return connect;
+        this.conection = connect;
+
+        return readUrl();
     }
 
-    public static List<String > readUrl(HttpURLConnection httpURLConnection) {
+
+    private List<String> readUrl() {
         List<String> result = null;
         try {
-            if(httpURLConnection.getResponseCode() == 200) {
-                result = readResopnseData(httpURLConnection.getInputStream());
+            if(conection.getResponseCode() == 200) {
+                result = readResopnseData(conection.getInputStream());
             }
         } catch (IOException e){
             e.printStackTrace();
         }
+        conection.disconnect();
         return result;
     }
+
     // Read responseData to StringBuilder
-    public static List<String> readResopnseData(InputStream inputStream) {
+    private static List<String> readResopnseData(InputStream inputStream) {
         if(inputStream == null ) return null;
 
-//        StringBuilder stringBuilder = new StringBuilder();
-        List<String> stringBuilder = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         String line = "";
         int idx = -1;
         String regex = "<div\\s+class";
-
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
              BufferedReader bufferedReader = new BufferedReader(inputStreamReader))
         {
             while( (line = bufferedReader.readLine()) != null) {
                 idx++;
-                if (line.matches(regex)){
-                    System.out.println(idx);
-                }
-//                System.out.print(line.matches(regex));
                 //line 선처리 \t \s 제거
                 line.replaceAll("\\t\s","");
                 line.replaceAll("\\t","");
                 if (line.matches(regex)) line = regex +"    "+ line;
-                stringBuilder.add(line);
+                result.add(line);
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return stringBuilder;
+        return result;
+    }
+    private List<String> getTitle(List<String> list){
+        List<String> result = new ArrayList<>();
+        boolean found = false;
+        for (String s : list) {
+            if(s.contains("toon_index")){
+                found = true;
+            }
+            if (found == true && s.contains("</ul>") ){
+                found = false;
+                break;
+            }
+            // 공백 제거
+            if(found == true && s.equals("") || s.contains("toon_index") ||s.contains("ul")){
+                continue;
+            }
+            if( found ) result.add(s);
+        }
+        return result;
     }
 }
