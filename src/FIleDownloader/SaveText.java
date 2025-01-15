@@ -8,7 +8,7 @@ import static java.io.IO.println;
 public class SaveText {
     String bodyText;
     String fullPath;
-    String defaultPath = "/home/dewey/Downloads/books/";
+    String defaultPath = new Downloader().downLoadPath;
 //    public SaveText(){
 //    }
     public SaveText(String sb){

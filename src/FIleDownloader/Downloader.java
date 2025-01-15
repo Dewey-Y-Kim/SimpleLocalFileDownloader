@@ -6,8 +6,13 @@ import java.util.List;
 
 public class Downloader {
     private String address;
+    String downLoadPath = "/home/dewey/Downloads/books/";
     public Downloader(String address) {
         this.address = address;
+    }
+
+    public Downloader() {
+
     }
 
     public void mainController() throws IOException {
