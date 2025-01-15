@@ -81,7 +81,9 @@ public class SaveText {
 //        }
         // 1. 파일 객체 생성
         File directory = new File(defaultPath+title);
-        directory.mkdirs();
+
+        if (!directory.exists()) directory.mkdirs();
+
         File file = new File(fullPath);
         // 2. 파일 존재여부 체크 및 생성
         try {
