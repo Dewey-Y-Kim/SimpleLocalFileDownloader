@@ -10,6 +10,7 @@ public class SaveText {
     String fullPath;
     String defaultPath = new Downloader().downLoadPath;
     String title;
+
 //    public SaveText(){
 //    }
     public SaveText(String title){
@@ -65,20 +66,6 @@ public class SaveText {
     }
     public void save(){
 
-//        //Text 파일 저장
-//        try {
-//             System.out.println(fullPath + " is starting");
-//
-//            OutputStream outputStream = new FileOutputStream(fullPath);
-//            byte[] bytes = bodyText.getBytes();
-//            outputStream.write(bytes);
-//            outputStream.close();
-//            System.out.println(fullPath + " is complete");
-//        } catch (IOException e) {
-//            System.out.println("Error occor  " + fullPath);
-//
-//            e.printStackTrace();
-//        }
         // 1. 파일 객체 생성
         File directory = new File(defaultPath+title);
 
