@@ -20,10 +20,11 @@ public class SaveText {
 //    public SaveText(String title, String bodyText){
 //        this.fullPath = defaultPath + title +"/" +title +".txt";
 //    }
-//    public SaveText(String title, List<String> bodyString){
-//        this.fullPath = defaultPath + title+"/";
-//        this.bodyText = buildString(bodyString);
-//    }
+
+    public SaveText(String title, List<String> bodyString){
+        this.fullPath = defaultPath + title+"/";
+        this.bodyText = buildString(bodyString);
+    }
     public SaveText(String title, String chaptor, String bodyText){
         this.fullPath = chkPath(defaultPath + title + "/") + chaptor + ".txt";
         this.bodyText = bodyText;
@@ -49,7 +50,14 @@ public class SaveText {
     }
     private String buildString(List<String> bodyText){
         StringBuilder result = new StringBuilder();
+        boolean isBody = false;
+
         for(String str :bodyText){
+            // script head 제거 구문
+            // 케이스가 3가지
+            // 1. <openTag> 만 있는 경우
+            // 2. <CloseTag> 만 있는 경우
+            // 3. <openTag> <closeTag> 같이 있는 q경우
             if(str.contains("<br>") || str.contains("<span>")) str = TagRemover(str);
 //            while(str.contains("  ")){
 //                str = str.replaceAll("  "," ");

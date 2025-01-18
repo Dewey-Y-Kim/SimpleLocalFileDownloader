@@ -16,15 +16,12 @@ public class TextMerger {
         file = new File(fullPath);
         this.TextMerger();
     }
-    public void TextMerger() throws IOException {
+    private void TextMerger() throws IOException {
 
         FileSaver(ListSorter());
     }
 
-    public String[] ListSorter(){
-
-
-
+    private String[] ListSorter(){
         String[] tempList = file.list();
         // list가 순서없이 만들어지므로 정렬
         // 이름-20 이 이름-2 보다 앞순서로 정렬하기 때문에 길이별 정렬 후, 다시 이름순으로 정렬.
