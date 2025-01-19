@@ -50,18 +50,38 @@ public class SaveText {
     }
     private String buildString(List<String> bodyText){
         StringBuilder result = new StringBuilder();
-        boolean isBody = false;
+        boolean isBody = true;
 
         for(String str :bodyText){
-            // script head 제거 구문
-            // 케이스가 3가지
-            // 1. <openTag> 만 있는 경우
-            // 2. <CloseTag> 만 있는 경우
-            // 3. <openTag> <closeTag> 같이 있는 q경우
-            if(str.contains("<br>") || str.contains("<span>")) str = TagRemover(str);
-//            while(str.contains("  ")){
-//                str = str.replaceAll("  "," ");
+//            if(str. contains( "<html")) continue;
+//            if(str.contains("</html")) break;
+//            if(str.contains("<head")){
+//                isBody = false;
+//                continue;
 //            }
+//            if(str.contains("</head>")) isBody = true;
+//
+//            if(str.contains("<meta") && str.contains(">")) continue;
+//            if(str.contains("<script") && str.contains("</script>")) continue;
+//            if(str.contains("<script>")){
+//                isBody = true;
+//                if(str.contains("</script")){
+//                    isBody = true;
+//                } else {
+//                    isBody = false;
+//                }
+//            }
+//            if( str.contains("</script>") && !isBody) {
+//                isBody = true;
+//                continue;
+//            }
+////            if( str.contains("<head />"))
+////            if ( !isBody ){
+////
+////                continue;
+////            }
+//            if( isBody) continue;
+            if(str.contains("<br>") || str.contains("<span>")) str = TagRemover(str);
             while (str.contains("\t")){
                 str = str.replaceAll("\t"," ");
             }
@@ -69,6 +89,30 @@ public class SaveText {
         }
         return result.toString();
     }
+//    private boolean tagChecker( String str){
+//
+//        // script head 제거 구문
+//        boolean result = false;
+//        // 케이스가 3가지
+//        boolean openTag = str.contains("<html") || str.contains("<head") || str.contains("<style") || str.contains("<script");
+//        boolean closeTag = str.contains("</html") || str.contains("</head") || str.contains("</style") || str.contains("</script");
+//
+//        // 1. <openTag> 만 있는 경우
+//        // 2. <CloseTag> 만 있는 경우
+//        // 3. <openTag> <closeTag> 같이 있는 q경우
+//        if ( openTag){
+//            if ( closeTag){
+//                isBody = true;
+//            } else {
+//                isBody = false;
+//            }
+//        }
+//
+//        if ( !isBody ){
+//            continue;
+//        }
+//        return result;
+//    }
     public void appendText( List<String> text){
             this.bodyText += buildString(text);
     }
