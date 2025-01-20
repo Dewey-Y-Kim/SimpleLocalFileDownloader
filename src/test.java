@@ -17,7 +17,7 @@ public class test {
 
 //        ConnectListUrl connectListUrl = new ConnectListUrl("");
 //        List<String> urlResult = connectListUrl.openConnect();
-        File file = new File("/home/dewey/Downloads/books/sakamotoDays");
+        File file = new File("");
         BufferedReader bufferedReader = new BufferedReader( new FileReader( file ));
         String str;
         List<String> result = new ArrayList<>();
