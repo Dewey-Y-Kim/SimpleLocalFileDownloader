@@ -1,5 +1,5 @@
 import FIleDownloader.SaveText;
-import FIleDownloader.TagRemover.TagGetter;
+import FIleDownloader.TagGetter.TagGetter;
 
 import java.io.BufferedReader;
 import java.io.File;
