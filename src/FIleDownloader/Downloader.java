@@ -15,7 +15,7 @@ public class Downloader {
 
     }
 
-    public void mainController() throws IOException {
+    public void makeOnefile() throws IOException {
         ConnectListUrl connectListUrl = new ConnectListUrl(address);
         GetBody titleList = new GetBody(connectListUrl.getResult());
         List list =titleList.getResult();
@@ -28,7 +28,7 @@ public class Downloader {
 //            try{
 //                Thread.sleep((long) Math.round((Math.random()* 1000)));
             GetBody temp = new GetBody(tempConnect.getResult(), smallTitle);
-            System.out.println(temp.getTitle() + "is reading.");
+            System.out.println(temp.getTitle() + " is reading.");
 
             saveText.appendText(temp.getResult());
         }
