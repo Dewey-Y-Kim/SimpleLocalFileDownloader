@@ -22,7 +22,8 @@ public class SaveText {
 //    }
 
     public SaveText(String title, List<String> bodyString){
-        this.fullPath = defaultPath + title+"/";
+        this.fullPath = chkPath(defaultPath + title+ "/")+title + ".txt";
+        this.title = title;
         this.bodyText = buildString(bodyString);
     }
     public SaveText(String title, String chaptor, String bodyText){
@@ -53,34 +54,6 @@ public class SaveText {
         boolean isBody = true;
 
         for(String str :bodyText){
-//            if(str. contains( "<html")) continue;
-//            if(str.contains("</html")) break;
-//            if(str.contains("<head")){
-//                isBody = false;
-//                continue;
-//            }
-//            if(str.contains("</head>")) isBody = true;
-//
-//            if(str.contains("<meta") && str.contains(">")) continue;
-//            if(str.contains("<script") && str.contains("</script>")) continue;
-//            if(str.contains("<script>")){
-//                isBody = true;
-//                if(str.contains("</script")){
-//                    isBody = true;
-//                } else {
-//                    isBody = false;
-//                }
-//            }
-//            if( str.contains("</script>") && !isBody) {
-//                isBody = true;
-//                continue;
-//            }
-////            if( str.contains("<head />"))
-////            if ( !isBody ){
-////
-////                continue;
-////            }
-//            if( isBody) continue;
             if(str.contains("<br>") || str.contains("<span>")) str = TagRemover(str);
             while (str.contains("\t")){
                 str = str.replaceAll("\t"," ");
@@ -89,30 +62,7 @@ public class SaveText {
         }
         return result.toString();
     }
-//    private boolean tagChecker( String str){
-//
-//        // script head 제거 구문
-//        boolean result = false;
-//        // 케이스가 3가지
-//        boolean openTag = str.contains("<html") || str.contains("<head") || str.contains("<style") || str.contains("<script");
-//        boolean closeTag = str.contains("</html") || str.contains("</head") || str.contains("</style") || str.contains("</script");
-//
-//        // 1. <openTag> 만 있는 경우
-//        // 2. <CloseTag> 만 있는 경우
-//        // 3. <openTag> <closeTag> 같이 있는 q경우
-//        if ( openTag){
-//            if ( closeTag){
-//                isBody = true;
-//            } else {
-//                isBody = false;
-//            }
-//        }
-//
-//        if ( !isBody ){
-//            continue;
-//        }
-//        return result;
-//    }
+
     public void appendText( List<String> text){
             this.bodyText += buildString(text);
     }
@@ -122,7 +72,6 @@ public class SaveText {
         File directory = new File(defaultPath+title);
 
         if (!directory.exists()) directory.mkdirs();
-
         File file = new File(fullPath);
         // 2. 파일 존재여부 체크 및 생성
         try {
@@ -130,6 +79,7 @@ public class SaveText {
             if (!file.exists()) {
                     file.createNewFile();
             }
+
             // 3. Buffer를 사용해서 File에 write할 수 있는 BufferedWriter 생성
             FileWriter fw = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(fw);

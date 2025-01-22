@@ -1,5 +1,8 @@
 package FIleDownloader.TagGetter;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -23,7 +26,6 @@ public class TagGetter {
     public TagGetter removeTag(String tag){
         List<String> result = new ArrayList<>();
         boolean adder = false;
-        System.out.println("TagRemover");
         String regex = "<" + tag + "*"+ "/>";
         Pattern pattern = Pattern.compile(regex);
         System.out.println("regex : " + regex);
@@ -47,38 +49,67 @@ public class TagGetter {
         }
         return text;
     }
-    public TagGetter UlGetter(){
-        UlGetter("");
-        return this;
+    // 테그만
+    public TagGetter tagGetter(TagType tag){
+        return tagGetter(tag, "");
     }
-    public TagGetter UlGetter(String id){
+
+    // 특정단어가 포함된 테그
+    public TagGetter tagGetter(TagType tag, String contains){
         List<String> result = new ArrayList<>();
         boolean found = false;
         int depth = 0;
-        for ( String str : originalList){
-            if(str.contains("<ul") && str.contains(id)) {
+        int idx = -1;
+        for ( String str : originalList ){
+            idx ++;
+            if(str.contains("<"+tag) && str.contains(contains)) {
                 found = true;
-                depth ++;
             }
-            if(str.contains("</ul") && depth > 0) {
-                found = false;
+            if(found && str.contains("<"+tag)) depth ++;
+            if(found && str.contains("</"+tag) && depth >= 0) {
                 depth --;
             }
-            if(found) result.add(str);
+            if(found && str.length()>=0) {
+                result.add(str.replaceAll("    ","  ").replaceAll("\t",""));
+            }
+            if(depth == 0){
+                found =false;
+            }
         }
         this.originalList = result;
         return this;
     }
-    // 문서의 타이틀만 가져오기
-//    private void setTitle(){
-//        String str = "";
-//        for(String line : originalTxt){
-//            if(line.contains("<strong>")){
-//                str = line.replaceAll("</strong>","").replaceAll("<strong>","").replaceAll("\t","");
-//                break;
-//            }
-//        }
-//        this.title = removeDoubleSpace(str);
-//
-//    }
+
+    public List listGetter(TagType tag){
+        tmpList list = new tmpList(originalList);
+
+        int depth = 0;
+        boolean found = false;
+        String tmp;
+        List<String> result = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        while ((tmp = list.getNext())!= null) {
+            if (tmp.contains("<"+tag.toString())) {
+                found = true;
+                depth++;
+            }
+            if (tmp.contains("</"+ tag.toString())) {
+                depth--;
+            }
+            if(found){
+                stringBuilder.append(tmp);
+                if(depth != 0 ) stringBuilder.append("\n");
+            }
+            if (tmp.contains("</"+tag.toString()) && depth == 0) {
+                found = false;
+                result.add(stringBuilder.toString());
+                stringBuilder = new StringBuilder();
+            }
+        }
+        for( int idx = 0 ; idx < result.size(); idx ++){
+            System.out.println(idx+"    "+result.get(idx));
+        }
+        return result;
+    }
+
 }
