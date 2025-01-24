@@ -1,4 +1,4 @@
-package file_downloader;
+package main.java.file_downloader;
 
 import java.io.IOException;
 import java.util.List;

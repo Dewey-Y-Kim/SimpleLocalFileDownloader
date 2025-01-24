@@ -1,4 +1,4 @@
-package file_downloader;
+package main.java.file_downloader;
 
 import java.io.*;
 import java.util.List;
@@ -52,7 +52,7 @@ public class SaveText {
         boolean isBody = true;
 
         for(String str :bodyText){
-            if(str.contains("<br>") || str.contains("<span>")) str = TagRemover(str);
+            if(str.contains("<br>") || str.contains("<span>")) str = tagRemover(str);
             while (str.contains("\t")){
                 str = str.replaceAll("\t"," ");
             }
@@ -93,7 +93,7 @@ public class SaveText {
 
 
     }
-    public String TagRemover(String tag) {
+    public String tagRemover(String tag) {
         String str = tag
                 .replaceAll("<br>", "\n")
                 .replaceAll("<br />","\n")

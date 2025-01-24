@@ -1,4 +1,4 @@
-package file_downloader;
+package main.java.file_downloader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,8 +71,8 @@ public class GetBody {
             }
             if( found && str.contains("<li>")) {
                 temp.add(str);
-                String smallTitle = PatternMatcher(titlePattern, str).replaceAll("</i>", "").replaceAll("<span", "");
-                String smallUrl = PatternMatcher(urlPattern, str).replaceAll("\"","").replaceAll("href=","");
+                String smallTitle = patternMatcher(titlePattern, str).replaceAll("</i>", "").replaceAll("<span", "");
+                String smallUrl = patternMatcher(urlPattern, str).replaceAll("\"","").replaceAll("href=","");
                 result.add(smallTitle);
                 result.add(smallUrl);
             }
@@ -81,7 +81,7 @@ public class GetBody {
 //        System.out.println("result = " + result);
         this.resultText =  result;
     }
-    private String PatternMatcher(Pattern pattern, String str){
+    private String patternMatcher(Pattern pattern, String str){
         Matcher matcher = pattern.matcher(str);
         String text = "";
         while ( matcher.find()){
