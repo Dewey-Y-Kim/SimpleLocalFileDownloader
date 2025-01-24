@@ -1,4 +1,4 @@
-package FIleDownloader;
+package file_downloader;
 
 public interface ConnectInterface {
 }

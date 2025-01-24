@@ -1,19 +1,13 @@
-package FIleDownloader.TagGetter;
+package file_downloader.TagGetter;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TagGetter {
     List<String> originalList;
-
-    public TagGetter(){
-
-    }
     public TagGetter(List<String> list){
         originalList = list;
     }
@@ -59,9 +53,7 @@ public class TagGetter {
         List<String> result = new ArrayList<>();
         boolean found = false;
         int depth = 0;
-        int idx = -1;
         for ( String str : originalList ){
-            idx ++;
             if(str.contains("<"+tag) && str.contains(contains)) {
                 found = true;
             }
@@ -81,14 +73,16 @@ public class TagGetter {
     }
 
     public List listGetter(TagType tag){
-        tmpList list = new tmpList(originalList);
 
         int depth = 0;
         boolean found = false;
-        String tmp;
         List<String> result = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
-        while ((tmp = list.getNext())!= null) {
+
+        // iterator 사용으로 변경
+        Iterator<String> iterator = originalList.iterator();
+        while (iterator.hasNext()) {
+            String tmp = iterator.next();
             if (tmp.contains("<"+tag.toString())) {
                 found = true;
                 depth++;

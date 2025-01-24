@@ -1,4 +1,4 @@
-package FIleDownloader;
+package file_downloader;
 
 import java.util.ArrayList;
 import java.util.List;

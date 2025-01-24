@@ -1,9 +1,7 @@
-package FIleDownloader;
+package file_downloader;
 
 import java.io.*;
 import java.util.List;
-
-import static java.io.IO.println;
 
 public class SaveText {
     String bodyText ="";

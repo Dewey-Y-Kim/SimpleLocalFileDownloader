@@ -1,8 +1,6 @@
-import FIleDownloader.ConnectListUrl;
-import FIleDownloader.Downloader;
+import file_downloader.Downloader;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {

@@ -1,6 +1,5 @@
-package FIleDownloader;
+package file_downloader;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
