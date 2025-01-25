@@ -1,11 +1,9 @@
-package FIleDownloader;
+package main.java.file_downloader;
 
 import javax.imageio.ImageIO;
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ImageMaker{

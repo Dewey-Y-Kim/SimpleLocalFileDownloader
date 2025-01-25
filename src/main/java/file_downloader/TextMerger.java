@@ -1,9 +1,8 @@
-package FIleDownloader;
+package main.java.file_downloader;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 public class TextMerger {
     private String fullPath;
@@ -28,16 +27,13 @@ public class TextMerger {
         Arrays.sort(tempList, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                int i=0;
-                if (o1.length() < o2.length()){
-                    i = -1;
-                } else if ( o1.length() > o2.length()){
-                    i = 1;
-                } else if ( o1.length() == o2.length()){
-                    i= o1.compareTo(o2);
-                }
 
-                return i;
+                if (o1.length() < o2.length()){
+                    return  -1;
+                } else if ( o1.length() > o2.length()){
+                    return  1;
+                }
+                return o1.compareTo(o2);
             }
         });
         return tempList;
