@@ -90,14 +90,13 @@ public class SaveText {
             System.out.println("Error occor  " + fullPath);
             throw new RuntimeException(e);
         }
-
-
     }
     public String tagRemover(String tag) {
         String str = tag
-                .replaceAll("<br>", "\n")
-                .replaceAll("<br />","\n")
-                .replaceAll("<br/>","\n")
+//                .replaceAll("<br>", "\n")
+//                .replaceAll("<br />","\n")
+//                .replaceAll("<br/>","\n")
+                .replaceAll("<br\\s*/?>","\n")
                 .replaceAll("<span>","")
                 .replaceAll("&gt;",">")
                 .replaceAll("&lt;","<")

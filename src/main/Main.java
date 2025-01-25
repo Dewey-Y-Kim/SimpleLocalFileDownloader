@@ -12,6 +12,6 @@ public class Main {
         // 다운로드 받을 장소는 FileDownloader.Downloader.downLoadPath
 
         Downloader downloader = new Downloader(url);
-        downloader.makeOnefile();
+        downloader.makeFullToOnefile();
     }
 }

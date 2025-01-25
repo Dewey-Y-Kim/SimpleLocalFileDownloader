@@ -8,10 +8,9 @@ public class test {
 
     public static void main(String[] args) throws IOException {
 
-
-        System.out.println(TagType.BUTTON.getTagName());
-        System.out.println(TagType.LI);
-
+        String regex = "<br\\s*/?>";
+        String test= "<br> <br/> s<br /> <sbr /> <br s>";
+        System.out.print(test.replaceAll(regex,"\n"));
 
     }
 }
