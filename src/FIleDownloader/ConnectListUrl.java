@@ -70,6 +70,7 @@ public class ConnectListUrl {
             while( (line = bufferedReader.readLine()) != null) {
                 idx++;
                 //line 선처리 \t \s 제거
+                line.replaceAll("  "," ");
                 line.replaceAll("\\t\s","");
                 line.replaceAll("\\t","");
                 if (line.matches(regex)) line = regex +"    "+ line;
