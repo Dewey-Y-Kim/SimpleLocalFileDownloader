@@ -14,7 +14,7 @@ public enum TagType {
         this.tagName = tagName;
     }
 
-    public String getTagName(){
+    public String getTagName() {
         return this.tagName;
     }
 }

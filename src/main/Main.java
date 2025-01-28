@@ -3,15 +3,33 @@ package main;
 import main.java.file_downloader.Downloader;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws IOException {
+        String temp = "";
         // 목록 화면에서 Url 입력
-        String url = "";
-        // 다운로드 받을 장소는 FileDownloader.Downloader.downLoadPath
+        ArrayList url = new ArrayList();
 
-        Downloader downloader = new Downloader(url);
-        downloader.makeFullToOnefile();
+        // 다운로드 받을 장소는 FileDownloader.Downloader.downLoadPath
+        if(args.length != 0){
+            Iterator<String> iterator = Arrays.stream(args).iterator();
+            while(iterator.hasNext()){
+                url.add(iterator.next());
+            }
+        } else{
+            url.add(temp);
+        }
+
+        Iterator listUrl = url.iterator();
+        while ( listUrl.hasNext()){
+            Downloader downloader = new Downloader(listUrl.next().toString());
+            downloader.makeFullToOnefile();
+        }
+        //       Downloader downloader = new Downloader(url);
+//        downloader.makeFullToOnefile();
     }
 }

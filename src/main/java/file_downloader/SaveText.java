@@ -2,11 +2,12 @@ package main.java.file_downloader;
 
 import java.io.*;
 import java.util.List;
+import java.util.Properties;
 
 public class SaveText {
     String bodyText ="";
     String fullPath;
-    String defaultPath = new Downloader().downLoadPath;
+    String defaultPath = new ReadProperty("main/setting.properties").readProperties().getProperty("Download.path");
     String title;
 
 //    public SaveText(){
