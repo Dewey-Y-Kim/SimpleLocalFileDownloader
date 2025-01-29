@@ -7,23 +7,23 @@ import java.util.Properties;
 public class SaveText {
     String bodyText ="";
     String fullPath;
-    String defaultPath = new ReadProperty("main/setting.properties").readProperties().getProperty("Download.path");
+    String defaultPath = setDefaultPath();
     String title;
-
+    boolean MakeNewPath = setMakeNewPath();
 //    public SaveText(){
 //    }
     public SaveText(String title){
-        this.fullPath = defaultPath+ title +"/"+ title +".txt";
         this.title = title;
+        setFullPath();
     }
 //    public SaveText(String title, String bodyText){
 //        this.fullPath = defaultPath + title +"/" +title +".txt";
 //    }
 
     public SaveText(String title, List<String> bodyString){
-        this.fullPath = chkPath(defaultPath + title+ "/")+title + ".txt";
         this.title = title;
         this.bodyText = buildString(bodyString);
+        setFullPath();
     }
     public SaveText(String title, String chaptor, String bodyText){
         this.fullPath = chkPath(defaultPath + title + "/") + chaptor + ".txt";
@@ -34,6 +34,25 @@ public class SaveText {
         filename = chkTitle(filename);
         this.fullPath = chkPath(defaultPath + title+ "/")+filename + ".txt";
         this.bodyText = buildString(bodyText);
+    }
+    private String setDefaultPath(){
+        String title =  new ReadProperty("main/setting.properties").readProperties().getProperty("Download.path");
+        if (title.lastIndexOf("/") != title.length()-1 ) title += "/";
+        return title;
+    }
+    private void setFullPath(){
+        if(MakeNewPath){
+            this.fullPath = chkPath(defaultPath + title+ "/") + title +"/"+ title +".txt";
+
+        } else {
+            this.fullPath = defaultPath + title +".txt";
+        }
+
+    }
+    private Boolean setMakeNewPath(){
+        String property = new ReadProperty("main/setting.properties").readProperties().getProperty("Download.makeNewPath").toLowerCase();
+        if( property == "true" || property == "yes") return true;
+        return false;
     }
     private String chkTitle(String title){
         return  title.replace("/",",");
@@ -68,7 +87,13 @@ public class SaveText {
     public void save(){
 
         // 1. 파일 객체 생성
-        File directory = new File(defaultPath+title);
+        File directory;
+        if(MakeNewPath){
+            directory = new File(defaultPath+title);
+
+        } else{
+            directory = new File(defaultPath);
+        }
 
         if (!directory.exists()) directory.mkdirs();
         File file = new File(fullPath);

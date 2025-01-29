@@ -10,26 +10,26 @@ import java.util.Iterator;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws IOException {
-        String temp = "";
+//        String temp = "";
         // 목록 화면에서 Url 입력
-        ArrayList url = new ArrayList();
+//        ArrayList url = new ArrayList();
 
         // 다운로드 받을 장소는 FileDownloader.Downloader.downLoadPath
-        if(args.length != 0){
-            Iterator<String> iterator = Arrays.stream(args).iterator();
-            while(iterator.hasNext()){
-                url.add(iterator.next());
-            }
-        } else{
-            url.add(temp);
-        }
-
-        Iterator listUrl = url.iterator();
-        while ( listUrl.hasNext()){
-            Downloader downloader = new Downloader(listUrl.next().toString());
-            downloader.makeFullToOnefile();
-        }
-        //       Downloader downloader = new Downloader(url);
-//        downloader.makeFullToOnefile();
+        Downloader downloader = new Downloader();
+        downloader.makeFullToOnefile();
+//        if(args.length != 0){
+//            Iterator<String> iterator = Arrays.stream(args).iterator();
+//            while(iterator.hasNext()){
+//                url.add(iterator.next());
+//            }
+//        } else{
+//            url.add(temp);
+//        }
+//
+//        Iterator listUrl = url.iterator();
+//        while ( listUrl.hasNext()){
+////            Downloader downloader = new Downloader(listUrl.next().toString());
+//            downloader.makeFullToOnefile();
+//        }
     }
 }

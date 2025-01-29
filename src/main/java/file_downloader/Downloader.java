@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Downloader {
-    private String address;
+    private String address = new ReadProperty("main/setting.properties").readProperties().getProperty("Download.url");;
     public Downloader(String address) {
         this.address = address;
     }
