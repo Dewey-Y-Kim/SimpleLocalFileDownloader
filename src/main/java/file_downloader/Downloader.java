@@ -1,19 +1,18 @@
 package main.java.file_downloader;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class Downloader {
-    private String address = new ReadProperty("main/setting.properties").readProperties().getProperty("Download.url");;
+    private String address;
+    public Downloader(){
+        this.address  = new ReadProperty("main/setting.properties").readProperties().getProperty("Download.url");
+    }
     public Downloader(String address) {
         this.address = address;
     }
-
-    public Downloader() {
-
-    }
-
-    public void makeFullToOnefile() throws IOException {
+    public void makeFullToOnefile() throws IOException, URISyntaxException {
         // 목록 연결
         ConnectListUrl connectListUrl = new ConnectListUrl(address);
 
@@ -33,7 +32,7 @@ public class Downloader {
         }
             saveOneTextFile.save();
     }
-    public void makeFulltoMultifile() throws IOException {
+    public void makeFulltoMultifile() throws IOException, URISyntaxException {
         ConnectListUrl connectListUrl = new ConnectListUrl(address);
         GetBody titleList = new GetBody(connectListUrl.getResult());
 

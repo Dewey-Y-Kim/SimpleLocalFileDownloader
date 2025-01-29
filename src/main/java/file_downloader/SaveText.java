@@ -70,13 +70,18 @@ public class SaveText {
     private String buildString(List<String> bodyText){
         StringBuilder result = new StringBuilder();
         boolean isBody = true;
-
         for(String str :bodyText){
-            if(str.contains("<br>") || str.contains("<span>")) str = tagRemover(str);
+//            if(str.contains("<br>") || str.contains("<span>")) str = tagRemover(str);
+            
+            str = tagRemover(str);
+            while (str.contains("  ")){
+                str = str.replaceAll(" {2}"," ");
+            }
             while (str.contains("\t")){
                 str = str.replaceAll("\t"," ");
             }
             result.append(str).append("\n");
+            
         }
         return result.toString();
     }

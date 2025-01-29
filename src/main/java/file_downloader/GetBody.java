@@ -49,7 +49,7 @@ public class GetBody {
     // 목록에서 제목과 그 url 가져오기
     private void setList(){
         List<String> result = new ArrayList<>();
-        List temp = new ArrayList();
+        List<String> temp = new ArrayList<>();
         Pattern urlPattern = Pattern.compile("href=\"(.*?)\"");
         Pattern titlePattern = Pattern.compile("</i>(.*?)<span");
         boolean found = false;
@@ -66,7 +66,7 @@ public class GetBody {
                 break;
             }
             // 공백 제거
-            if(found == true && str.length() < 3 &&(str.equals("") || str.contains("toon_index") ||str.contains("ul"))){
+            if(found && str.length() < 3 &&(str.isEmpty() || str.contains("toon_index") ||str.contains("ul"))){
                 continue;
             }
             if( found && str.contains("<li>")) {

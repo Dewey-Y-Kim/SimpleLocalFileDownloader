@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +20,13 @@ public class ConnectListUrl {
         return result;
     }
 
-    public ConnectListUrl(String address) throws IOException {
+    public ConnectListUrl(String address) throws IOException, URISyntaxException {
         this.address = address;
         this.result = openConnect();
     }
 
-    public List<String> openConnect() throws IOException {
-
-        URL url = new URL(address);
+    public List<String> openConnect() throws IOException, URISyntaxException {
+        URL url = new URI(address).toURL();
         HttpURLConnection connect = null;
 
         try {
