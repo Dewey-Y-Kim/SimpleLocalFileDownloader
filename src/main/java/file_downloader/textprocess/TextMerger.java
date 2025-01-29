@@ -1,4 +1,4 @@
-package main.java.file_downloader;
+package main.java.file_downloader.textprocess;
 
 import java.io.*;
 import java.util.Arrays;

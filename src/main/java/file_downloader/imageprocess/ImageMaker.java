@@ -1,4 +1,4 @@
-package main.java.file_downloader;
+package main.java.file_downloader.imageprocess;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

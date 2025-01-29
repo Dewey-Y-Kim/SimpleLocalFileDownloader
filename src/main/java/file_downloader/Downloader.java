@@ -1,5 +1,9 @@
 package main.java.file_downloader;
 
+import main.java.file_downloader.connector.ConnectListUrl;
+import main.java.file_downloader.responseprocess.GetBody;
+import main.java.file_downloader.fileprocess.SaveText;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;

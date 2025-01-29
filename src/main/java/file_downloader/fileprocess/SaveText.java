@@ -1,8 +1,9 @@
-package main.java.file_downloader;
+package main.java.file_downloader.fileprocess;
+
+import main.java.file_downloader.ReadProperty;
 
 import java.io.*;
 import java.util.List;
-import java.util.Properties;
 
 public class SaveText {
     String bodyText ="";

@@ -1,4 +1,4 @@
-package main.java.file_downloader;
+package main.java.file_downloader.connector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class ConnectListUrl {
 
         try {
             connect = (HttpURLConnection) url.openConnection();
-            connect.setReadTimeout(3000);
+            connect.setReadTimeout(5000);
             connect.setRequestMethod("GET");
             connect.setRequestProperty("Content-Type", "application/json");
         } catch (IOException e) {

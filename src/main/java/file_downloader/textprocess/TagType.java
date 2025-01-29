@@ -1,4 +1,4 @@
-package main.java.file_downloader;
+package main.java.file_downloader.textprocess;
 
 public enum TagType {
     UL("ul"),

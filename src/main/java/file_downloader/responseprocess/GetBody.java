@@ -1,4 +1,4 @@
-package main.java.file_downloader;
+package main.java.file_downloader.responseprocess;
 
 import java.util.ArrayList;
 import java.util.List;
