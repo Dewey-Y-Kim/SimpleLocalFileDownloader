@@ -39,14 +39,14 @@ public class Downloader {
     public void makeFulltoMultifile() throws IOException, URISyntaxException {
         ConnectListUrl connectListUrl = new ConnectListUrl(address);
         GetBody titleList = new GetBody(connectListUrl.getResult());
-
+        System.out.println("titleList.getTitle() : "+ titleList.getTitle());
         List list = titleList.getResult();
-        SaveText saveText = new SaveText(titleList.getTitle());
         for (int idx = (list.size()+1) / 2 ; idx>0 ; idx--) {
             String smallUrl = (String) list.get(idx * 2 - 1);
             String smallTitle = (String) list.get(idx * 2 -2);
             ConnectListUrl tempConnect = new ConnectListUrl(smallUrl);
             GetBody temp = new GetBody(tempConnect.getResult(), smallTitle);
+            SaveText saveText = new SaveText(titleList.getTitle(), smallTitle, temp.getResult());
             saveText.save();
             System.out.println(temp.getTitle() + " has saved.");
         }

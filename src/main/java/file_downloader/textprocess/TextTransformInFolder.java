@@ -6,6 +6,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextTransformInFolder {
     public void textTransformer(String path) throws IOException {
@@ -90,5 +92,27 @@ public class TextTransformInFolder {
         fileWriter.write(text);
         fileWriter.flush();
         System.out.println(file.getAbsoluteFile() +" is changed");
+    }
+    public String[] splitTitle(String str){
+        // ..ㅁㅇㅁㅁ124214화 - > [124214,..ㅁㅇㅁㅁ,화]
+        String regex = "(\\d+)(?=\\D*$)";  // \d는 숫자를 의미하며, +는 1개 이상의 숫자
+
+        // 정규식 컴파일
+        Pattern pattern = Pattern.compile(regex);
+
+        // 매칭을 위한 Matcher 객체 생성
+        Matcher matcher = pattern.matcher(str);
+        String[] result = new String[3];
+        // 숫자가 있는지 확인하고 첫 번째 매칭된 값을 리턴
+        if (matcher.find()) {
+            result[0] = str.substring(0,str.indexOf(matcher.group()));
+            result[1] = matcher.group();
+            result[2] = str.substring(str.indexOf(matcher.group()) + matcher.group().length() );
+        } else {
+            result[0] = "";
+            result[1] = "There is no Number";
+            result[2] = "";
+        }
+        return result;
     }
 }

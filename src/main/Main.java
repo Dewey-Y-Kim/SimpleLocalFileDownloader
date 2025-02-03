@@ -12,16 +12,15 @@ import java.util.Iterator;
 public class Main {
     public static void main(String[] args) throws IOException, URISyntaxException {
         Downloader downloader;
-        if(args.length == 0 ){
-            System.out.println("null");
-            downloader = new Downloader();
+//        if(type.contains("http")){
+//            downloader= new Downloader(type);
+//            downloader.makeFullToOnefile();
+//        }else{
+//
+//        }
+        for(String str : args){
+            downloader=new Downloader(str);
             downloader.makeFullToOnefile();
-        } else{
-            for(String str : args){
-                downloader=new Downloader(str);
-                downloader.makeFullToOnefile();
-
-            }
         }
     }
 }

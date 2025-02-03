@@ -10,7 +10,7 @@ public class SaveText {
     String fullPath;
     String defaultPath = setDefaultPath();
     String title;
-    boolean MakeNewPath = setMakeNewPath();
+    boolean makeNewPath = setMakeNewPath();
 //    public SaveText(){
 //    }
     public SaveText(String title){
@@ -42,12 +42,12 @@ public class SaveText {
     }
 
     private String setDefaultPath(){
-        String title =  new ReadProperty("main/setting.properties").readProperties().getProperty("Download.path");
-        if (title.lastIndexOf("/") != title.length()-1 ) title += "/";
-        return title;
+        String propertyPath =  new ReadProperty("main/setting.properties").readProperties().getProperty("Download.path");
+        if (propertyPath.lastIndexOf("/") != propertyPath.length()-1 ) propertyPath += "/";
+        return propertyPath;
     }
     private void setFullPath(){
-        if(MakeNewPath){
+        if(makeNewPath){
             this.fullPath = chkPath(defaultPath + title+ "/") + title +"/"+ title +".txt";
 
         } else {
@@ -99,9 +99,8 @@ public class SaveText {
 
         // 1. 파일 객체 생성
         File directory;
-        if(MakeNewPath){
+        if(makeNewPath){
             directory = new File(defaultPath+title);
-
         } else{
             directory = new File(defaultPath);
         }
