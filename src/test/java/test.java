@@ -1,18 +1,23 @@
 package test.java;
 
-import main.Ui.Uitest;
-import main.java.file_downloader.ReadProperty;
+import main.java.file_downloader.connector.ConnectListUrl;
+import main.java.file_downloader.fileprocess.SaveText;
+import main.java.file_downloader.textprocess.TextTransformInFolder;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-public class test {
+public class test{
 
-    public void main(String[] args) throws IOException {
-//        Uitest uitest = new Uitest();
-        String path =  new ReadProperty("main/setting.properties").readProperties().getProperty("Download.makeNewPath");
-        System.out.println(path);
-    } 
+    public void main(String[] args) throws IOException, URISyntaxException, NullPointerException{
+        ConnectListUrl connectListUrl = new ConnectListUrl("https://sukebei.nyaa.si/?f=2&c=0_0&q=%2B%2B+FC2-PPV");
+        connectListUrl.openConnect();
+        List<String > result = connectListUrl.getResult();
+        for(String str : result){
+            System.out.println(str);
+        }
+    }
 }

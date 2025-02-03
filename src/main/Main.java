@@ -23,19 +23,5 @@ public class Main {
 
             }
         }
-//        if(args.length != 0){
-//            Iterator<String> iterator = Arrays.stream(args).iterator();
-//            while(iterator.hasNext()){
-//                url.add(iterator.next());
-//            }
-//        } else{
-//            url.add(temp);
-//        }
-//
-//        Iterator listUrl = url.iterator();
-//        while ( listUrl.hasNext()){
-////            Downloader downloader = new Downloader(listUrl.next().toString());
-//            downloader.makeFullToOnefile();
-//        }
     }
 }

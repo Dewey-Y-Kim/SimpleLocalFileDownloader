@@ -36,6 +36,11 @@ public class SaveText {
         this.fullPath = chkPath(defaultPath + title+ "/")+filename + ".txt";
         this.bodyText = buildString(bodyText);
     }
+
+    public SaveText() {
+
+    }
+
     private String setDefaultPath(){
         String title =  new ReadProperty("main/setting.properties").readProperties().getProperty("Download.path");
         if (title.lastIndexOf("/") != title.length()-1 ) title += "/";
@@ -124,7 +129,7 @@ public class SaveText {
         }
     }
     public String tagRemover(String tag) {
-        String str = tag
+        return tag
 //                .replaceAll("<br>", "\n")
 //                .replaceAll("<br />","\n")
 //                .replaceAll("<br/>","\n")
@@ -134,6 +139,13 @@ public class SaveText {
                 .replaceAll("&lt;","<")
                 .replaceAll("</span>","");
 //                .replaceAll("<(.*?)>", "");
-        return str;
+    }
+    public String divTop (String tag) {
+        return tag.replaceAll("<div>", "<p>")
+                .replaceAll("</div>", "</p>");
+    }
+    public String divToLineChange(String tag){
+        return tag.replaceAll("<div>", "")
+                .replaceAll("</div>", "\n");
     }
 }

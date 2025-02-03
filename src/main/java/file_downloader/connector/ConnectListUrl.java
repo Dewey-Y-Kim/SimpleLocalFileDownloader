@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +46,17 @@ public class ConnectListUrl {
             if(conection.getResponseCode() == 200) {
                 result = readResopnseData(conection.getInputStream());
             }
-        } catch (IOException e){
+        } catch (ConnectException e){
+            e.printStackTrace();
+        } catch (SocketException e){
             e.printStackTrace();
         }
-        conection.disconnect();
+         catch (IOException e) {
+             e.printStackTrace();
+         }
+
+            conection.disconnect();
+
         return result;
     }
 
