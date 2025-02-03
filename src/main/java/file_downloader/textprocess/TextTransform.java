@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TextTransformInFolder {
+public class TextTransform {
     public void textTransformer(String path) throws IOException {
         // To-do
         // folder read
@@ -114,5 +114,11 @@ public class TextTransformInFolder {
             result[2] = "";
         }
         return result;
+    }
+    public String lPad(String str,int size){
+        if( str.length() < size){
+            return  "0".repeat(size - str.length())+str;
+        }
+        return "#".repeat(size);
     }
 }
