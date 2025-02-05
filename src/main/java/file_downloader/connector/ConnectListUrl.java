@@ -46,8 +46,6 @@ public class ConnectListUrl {
             if(conection.getResponseCode() == 200) {
                 result = readResopnseData(conection.getInputStream());
             }
-        } catch (ConnectException e){
-            e.printStackTrace();
         } catch (SocketException e){
             e.printStackTrace();
         }
@@ -74,7 +72,7 @@ public class ConnectListUrl {
             while( (line = bufferedReader.readLine()) != null) {
                 idx++;
                 //line 선처리 \t \s 제거
-                line.replaceAll("  "," ");
+                line.replaceAll("\\s\\s"," ");
                 line.replaceAll("\\t\s","");
                 line.replaceAll("\\t","");
                 if (line.matches(regex)) line = regex +"    "+ line;

@@ -1,45 +1,37 @@
 package test.java;
 
-import main.java.file_downloader.Downloader;
 import main.java.file_downloader.connector.ConnectListUrl;
 import main.java.file_downloader.fileprocess.SaveText;
-import main.java.file_downloader.textprocess.TextTransformInFolder;
+import main.java.file_downloader.responseprocess.GetBody;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class test{
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-
-//        ConnectListUrl connectListUrl = new ConnectListUrl("https://sukebei.nyaa.si/?f=2&c=0_0&q=%2B%2B+FC2-PPV");
-//        connectListUrl.openConnect();
-//        List<String > result = connectListUrl.getResult();
-//        for(String str : result){
-//            System.out.println(str);
+//        // Image Downloader
+//        String address = "";
+//        String filePath = "";
+//        URL url = new URI(address).toURL();
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.setRequestMethod("GET");
+//        connection.setConnectTimeout(1000);
+//        connection.setRequestProperty("content-type","image/jpeg");
+//        InputStream in = connection.getInputStream();
+//        int i;
+//        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+//        while((i = in.read()) != -1){
+//            fileOutputStream.write(i);
 //        }
-//        Integer i = 1;
-//        System.out.println(i.getClass().getName().getClass().getName());
-//        // Download multifiles
-//        Downloader downloader;
-//        for(String str : args){
-//            downloader=new Downloader(str);
-//            downloader.makeFulltoMultifile();
-//        }
-
-        String str1 = "벌 신아 (202)화.txt";
-        String str2 = "벌  12  신아 (202)화.txt";
-        String str3 = "화123ks492화";
-//        for (String s : new TextTransformInFolder().splitTitle(str1)){
-//            System.out.println(s);
-//        };
-        System.out.println(Arrays.stream(Arrays.stream(new TextTransformInFolder().splitTitle(str1)).toArray()).toList());
+//        fileOutputStream.flush();
+        ConnectListUrl connectListUrl = new ConnectListUrl("http://156.239.152.81:7600/bbs/board.php?bo_table=toons&stx=%EC%9D%80%ED%98%BC&search=1&is=40");
+        List<String> list = connectListUrl.getResult();
+        SaveText saveText = new SaveText("test",list);
+        saveText.save();
+        
     }
 
 }

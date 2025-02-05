@@ -13,9 +13,9 @@ public class TextMerger {
     public TextMerger(String fullPath) throws IOException {
         this.fullPath = fullPath;
         file = new File(fullPath);
-        this.TextMerger();
+        textMerger();
     }
-    private void TextMerger() throws IOException {
+    private void textMerger() throws IOException {
 
         FileSaver(ListSorter());
     }
