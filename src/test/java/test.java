@@ -36,13 +36,20 @@ public class test{
         File file = new File("/home/dewey/Downloads/books/detail.html");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         List<String> list  = new ArrayList<>();
-        // get var
+
+        // get var to Array
         String keyword = "var img_list";
         String str;
-        String[] result;
+        String[] result= null;
         while((str = bufferedReader.readLine())!=null){
-            if (str.contains(keyword))
-            return str.replaceFirst("(.*)\\[","").replaceFirst("]","").replaceAll("\"","").split(",");
+            if (str.contains(keyword)){
+                result = str.replaceFirst("(.*)\\[","").replaceFirst("]","").replaceAll("\"","").replaceAll(";","").split(",");
+                break;
+            }
+        }
+        for(int idx = 0 ; idx < result.length ; idx ++ ){
+            result[idx] = "https:"+result[idx];
+            System.out.println(result[idx]);
         }
         
         //        SaveText saveText = new SaveText("test",list);
