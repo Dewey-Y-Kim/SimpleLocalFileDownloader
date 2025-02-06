@@ -7,6 +7,8 @@ import main.java.file_downloader.responseprocess.GetBody;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class test{
@@ -26,11 +28,25 @@ public class test{
 //        while((i = in.read()) != -1){
 //            fileOutputStream.write(i);
 //        }
+
+//        ConnectListUrl connectListUrl = new ConnectListUrl("");
+//        List<String> list = connectListUrl.getResult();
+
 //        fileOutputStream.flush();
-        ConnectListUrl connectListUrl = new ConnectListUrl("http://156.239.152.81:7600/bbs/board.php?bo_table=toons&stx=%EC%9D%80%ED%98%BC&search=1&is=40");
-        List<String> list = connectListUrl.getResult();
-        SaveText saveText = new SaveText("test",list);
-        saveText.save();
+        File file = new File("/home/dewey/Downloads/books/detail.html");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        List<String> list  = new ArrayList<>();
+        // get var
+        String keyword = "var img_list";
+        String str;
+        String[] result;
+        while((str = bufferedReader.readLine())!=null){
+            if (str.contains(keyword))
+            return str.replaceFirst("(.*)\\[","").replaceFirst("]","").replaceAll("\"","").split(",");
+        }
+        
+        //        SaveText saveText = new SaveText("test",list);
+//        saveText.save();
         
     }
 

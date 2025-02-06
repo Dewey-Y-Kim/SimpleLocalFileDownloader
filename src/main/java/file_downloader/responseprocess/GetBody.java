@@ -1,4 +1,4 @@
-package main.java.file_downloader.responseprocess;
+    package main.java.file_downloader.responseprocess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,7 @@ public class GetBody {
         return resultText;
     }
 
+
     // 페이지에서 txt 리턴 <p> 태그만 가져오기
     public List<String> setPage(){
         List<String> removedPtag = new ArrayList<>();
@@ -53,11 +54,11 @@ public class GetBody {
         Pattern urlPattern = Pattern.compile("href=\"(.*?)\"");
         Pattern titlePattern = Pattern.compile("</i>(.*?)<span");
         boolean found = false;
-
+        String keyword = "toon_index";
         for(String str : originalTxt){
 
             str.replaceAll("\t","").replaceAll("\\t","");
-            if(str.contains("toon_index")){
+            if(str.contains(keyword)){
                 found = true;
                 continue;
             }
@@ -66,7 +67,7 @@ public class GetBody {
                 break;
             }
             // 공백 제거
-            if(found && str.length() < 3 &&(str.isEmpty() || str.contains("toon_index") ||str.contains("ul"))){
+            if(found && str.length() < 3 &&(str.isEmpty() || str.contains(keyword) ||str.contains("ul"))){
                 continue;
             }
             if( found && str.contains("<li>")) {
