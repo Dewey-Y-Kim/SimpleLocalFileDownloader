@@ -1,24 +1,8 @@
 package test.java;
 
-<<<<<<< HEAD
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
 public class test{
 
-    public static void main(String[] args) throws IOException, URISyntaxException, NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
+    public static void main(String[] args) {
 //
 //        File file = new File("/home/dewey/Downloads/books/detail.html");
 //        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -58,40 +42,27 @@ public class test{
 //        result = fileName + " is complete.";
         //p3p:
         //CP="ALL CURa ADMa DEVa TAIa OUR BUS IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC OTC"
-        }
 
-=======
-import javax.net.ssl.*;
-import java.io.*;
-import java.net.*;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.sql.Connection;
 
-public class test{
-
-    public static void main(String[] args) throws IOException, URISyntaxException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException {
-        String address = "";
-        URL url = new URI(address).toURL();
-        SSLContext context = SSLContext.getInstance("TLS");
-        context.init(null, null, null);
-
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setHostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        });
-        connection.setSSLSocketFactory(context.getSocketFactory());
-        connection.setInstanceFollowRedirects(true);
-
-        connection.setRequestMethod("GET");
-        connection.setReadTimeout(10000);
-
-        System.out.println(connection.getResponseCode());
+//        String address = "";
+//        URL url = new URI(address).toURL();
+//        SSLContext context = SSLContext.getInstance("TLS");
+//        context.init(null, null, null);
+//
+//        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+//        connection.setHostnameVerifier(new HostnameVerifier() {
+//            @Override
+//            public boolean verify(String hostname, SSLSession session) {
+//                return true;
+//            }
+//        });
+//        connection.setSSLSocketFactory(context.getSocketFactory());
+//        connection.setInstanceFollowRedirects(true);
+//
+//        connection.setRequestMethod("GET");
+//        connection.setReadTimeout(10000);
+//
+//        System.out.println(connection.getResponseCode());
 
     }
->>>>>>> c951825fbe76a6ab515912b64c654f6c96adfc46
 }
