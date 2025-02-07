@@ -1,13 +1,23 @@
 package test.java;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class test{
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException, URISyntaxException, NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
 //
 //        File file = new File("/home/dewey/Downloads/books/detail.html");
 //        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -45,10 +55,8 @@ public class test{
 //
 //        ImageIO.write(image, extension, file);
 //        result = fileName + " is complete.";
-        File file = new File("/home/dewey/Downloads/books/list.html");
-
-        
-        
-    }
+        //p3p:
+        //CP="ALL CURa ADMa DEVa TAIa OUR BUS IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC OTC"
+        }
 
 }
