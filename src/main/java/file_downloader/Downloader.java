@@ -1,6 +1,7 @@
 package main.java.file_downloader;
 
 import main.java.file_downloader.connector.ConnectListUrl;
+import main.java.file_downloader.connector.Connector;
 import main.java.file_downloader.responseprocess.GetBody;
 import main.java.file_downloader.fileprocess.SaveText;
 
@@ -18,9 +19,9 @@ public class Downloader {
     }
     public void makeFullToOnefile() throws IOException, URISyntaxException {
         // 목록 연결
-        ConnectListUrl connectListUrl = new ConnectListUrl(address);
+        Connector connector = new Connector(address) ;
 
-        GetBody titleList = new GetBody(connectListUrl.getResult());
+        GetBody titleList = new GetBody(connector.getList());
 
         List list = titleList.getResult();
 

@@ -8,7 +8,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConnectListUrl {
+public class ConnectListUrl  {
     private HttpURLConnection conection;
     private String address;
     private List<String> result;
