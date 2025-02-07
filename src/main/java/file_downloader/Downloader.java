@@ -19,9 +19,9 @@ public class Downloader {
     }
     public void makeFullToOnefile() throws IOException, URISyntaxException {
         // 목록 연결
-        Connector connectListUrl = new Connector(address) ;
+        Connector connector = new Connector(address) ;
 
-        GetBody titleList = new GetBody(connectListUrl.getList());
+        GetBody titleList = new GetBody(connector.getList());
 
         List list = titleList.getResult();
 

@@ -22,7 +22,9 @@ public class Connector {
     }
 
     public Connector(String address) throws IOException, URISyntaxException {
+
         this.address = address;
+
         this.result = openConnect();
     }
 
@@ -47,6 +49,8 @@ public class Connector {
     private String readUrl() {
         String result = null;
         try {
+            String code;
+            code = String.valueOf(conection.getResponseCode());
             if(conection.getResponseCode() == 200) {
                 result = readResopnseData(conection.getInputStream());
             }
