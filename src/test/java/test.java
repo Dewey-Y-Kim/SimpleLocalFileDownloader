@@ -1,7 +1,9 @@
 package test.java;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +47,11 @@ public class test{
 //
 //        ImageIO.write(image, extension, file);
 //        result = fileName + " is complete.";
-        File file = new File("/home/dewey/Downloads/books/list.html");
 
-        
+//        File file = new File("/home/dewey/Downloads/books/list.html");
+        String path = "";
+        URL url = new URI(path).toURL();
+        System.out.println(url.getHost()+url.getPath());
         
     }
 
