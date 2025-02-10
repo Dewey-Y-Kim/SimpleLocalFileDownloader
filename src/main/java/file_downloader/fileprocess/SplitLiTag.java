@@ -8,7 +8,24 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SplitLiTag {
-    public List<String> splitLitag(String original) throws MalformedURLException, URISyntaxException {
+    private String original;
+    private List<String> result;
+
+    public SplitLiTag(String original){
+        this.original = original;
+        try {
+            result = splitLitag(original);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public List<String> getResult() {
+        return result;
+    }
+
+    private List<String> splitLitag(String original) throws MalformedURLException, URISyntaxException {
         String[] originalText = original.split("\n");
         List list = Arrays.stream(originalText).toList();
         Iterator iterator = list.iterator();
