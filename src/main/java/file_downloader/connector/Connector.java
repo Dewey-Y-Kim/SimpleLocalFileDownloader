@@ -51,6 +51,7 @@ public class Connector {
         try {
             String code;
             code = String.valueOf(conection.getResponseCode());
+                System.out.println(code);
             if(conection.getResponseCode() == 200) {
                 result = readResopnseData(conection.getInputStream());
             }
@@ -65,7 +66,7 @@ public class Connector {
     // Read responseData to StringBuilder
     private static String readResopnseData(InputStream inputStream) {
         if(inputStream == null ) return null;
-
+        
         StringBuilder stringBuilder = new StringBuilder();
         String line = "";
         int idx = -1;

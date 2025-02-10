@@ -15,6 +15,7 @@ public class SaveText {
 //    }
     public SaveText(String title){
         this.title = title;
+        defaultPath = "./";
         setFullPath();
     }
 //    public SaveText(String title, String bodyText){

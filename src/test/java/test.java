@@ -1,5 +1,6 @@
 package test.java;
 
+import main.java.file_downloader.Downloader;
 import main.java.file_downloader.imageprocess.ImageMaker;
 import main.java.file_downloader.textprocess.TextTransform;
 
@@ -34,18 +35,19 @@ public class test{
         //Sec-Fetch-User: ?1
         //Priority: u=0, i
         connection.setRequestMethod("GET");
-        
-        InputStream inputStream = connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader( inputStream));
-        String str = "";
-        StringBuilder stringBuilder = new StringBuilder();
-        if(connection.getResponseCode() == 200){
-            while ((str = bufferedReader.readLine()) != null){
-                stringBuilder.append(str);
-                stringBuilder.append("\n");
-            }
-        }
-        System.out.println(stringBuilder.toString());
+        System.out.println(connection.getResponseCode());
+//
+//        InputStream inputStream = connection.getInputStream();
+//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader( inputStream));
+//        String str = "";
+//        StringBuilder stringBuilder = new StringBuilder();
+//        if(connection.getResponseCode() == 200){
+//            while ((str = bufferedReader.readLine()) != null){
+//                stringBuilder.append(str);
+//                stringBuilder.append("\n");
+//            }
+//        }
+//        System.out.println(stringBuilder.toString());
 //
 //        File file = new File("/home/dewey/Downloads/books/detail.html");
 //        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -101,7 +103,8 @@ public class test{
 //
 //            System.out.printf("%d   %s is downloaded\n",idx ,idx+".png");
 //        }
-        
+//        new Downloader("https://11toon144.com/bbs/board.php?bo_table=toons&stx=%EC%97%B4%ED%98%88%EA%B0%95%ED%98%B8&is=1").makeImageList();
+//        new Downloader("https://newtoki.biz/webtoon/14080").makeImageList();
     }
     public String patternMaker(String str){
         Pattern pattern = Pattern.compile("src=\"(.*)\" ");

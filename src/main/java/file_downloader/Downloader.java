@@ -2,6 +2,7 @@ package main.java.file_downloader;
 
 import main.java.file_downloader.connector.ConnectListUrl;
 import main.java.file_downloader.connector.Connector;
+import main.java.file_downloader.fileprocess.SplitLiTag;
 import main.java.file_downloader.responseprocess.GetBody;
 import main.java.file_downloader.fileprocess.SaveText;
 
@@ -38,8 +39,8 @@ public class Downloader {
             saveOneTextFile.save();
     }
     public void makeFulltoMultifile() throws IOException, URISyntaxException {
-        ConnectListUrl connectListUrl = new ConnectListUrl(address);
-        GetBody titleList = new GetBody(connectListUrl.getResult());
+        Connector connector = new Connector(address);
+        GetBody titleList = new GetBody(connector.getList());
         System.out.println("titleList.getTitle() : "+ titleList.getTitle());
         List list = titleList.getResult();
         for (int idx = (list.size()+1) / 2 ; idx>0 ; idx--) {
@@ -52,7 +53,18 @@ public class Downloader {
             System.out.println(temp.getTitle() + " has saved.");
         }
     }
-    public void makeOneFile(){
-
+    public void makeImageList(){
+        String original ="";
+        try {
+            Connector connector = new Connector(address);
+            original = connector.getResult();
+            System.out.println(original);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+//        List<String> html = new SplitLiTag(original).getResult();
+//        new SaveText("makeImage.txt");
     }
 }
