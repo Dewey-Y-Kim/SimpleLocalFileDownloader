@@ -49,9 +49,6 @@ public class Connector {
     private String readUrl() {
         String result = null;
         try {
-            String code;
-            code = String.valueOf(conection.getResponseCode());
-                System.out.println(code);
             if(conection.getResponseCode() == 200) {
                 result = readResopnseData(conection.getInputStream());
             }

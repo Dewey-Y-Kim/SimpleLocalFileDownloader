@@ -1,20 +1,19 @@
 package main.java.file_downloader.textprocess;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 public class GetValueByVarName {
     ArrayList<String> list;
     String[] result;
 
-    public GetValueByVarName(String keyword, List<String> list){
-        this.list = (ArrayList<String>) list;
-        setResult(keyword);
+    public GetValueByVarName(String keyword, String body){
+        this.list = (ArrayList<String>) Arrays.stream(body.split("\n")).toList();
+        this.result = setResult(keyword);
     }
 
-    private void setResult(String keyword) {
+    private String[] setResult(String keyword) {
 
         String[] result= null;
         Iterator iterator = list.iterator();
@@ -30,7 +29,7 @@ public class GetValueByVarName {
                 break;
             }
         }
-        this.result = result;
+        return result;
     }
 
     public String[] getResult() {
