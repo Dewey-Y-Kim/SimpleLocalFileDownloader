@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.FileReader;
-public class ReadBody {
+public class ReadText {
     String fullpath;
     String body;
 
-    public ReadBody(String path){
+    public ReadText(String path){
         this.fullpath = path;
     }
 

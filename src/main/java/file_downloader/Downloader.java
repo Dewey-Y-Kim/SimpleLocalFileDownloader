@@ -2,19 +2,16 @@ package main.java.file_downloader;
 
 import main.java.file_downloader.connector.ConnectListUrl;
 import main.java.file_downloader.connector.Connector;
-import main.java.file_downloader.fileprocess.ListObj;
-import main.java.file_downloader.fileprocess.SplitLiTag;
+import main.java.file_downloader.responseprocess.ListObj;
+import main.java.file_downloader.responseprocess.SplitLiTag;
 import main.java.file_downloader.imageprocess.ImageMaker;
 import main.java.file_downloader.responseprocess.GetBody;
 import main.java.file_downloader.fileprocess.SaveText;
 import main.java.file_downloader.textprocess.GetValueByVarName;
 import main.java.file_downloader.textprocess.TextTransform;
 
-import javax.xml.crypto.dsig.Transform;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

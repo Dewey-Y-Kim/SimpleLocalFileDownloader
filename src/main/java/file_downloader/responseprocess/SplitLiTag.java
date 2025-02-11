@@ -1,4 +1,4 @@
-package main.java.file_downloader.fileprocess;
+package main.java.file_downloader.responseprocess;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
