@@ -2,16 +2,22 @@ package main.java.file_downloader;
 
 import main.java.file_downloader.connector.ConnectListUrl;
 import main.java.file_downloader.connector.Connector;
+import main.java.file_downloader.fileprocess.ListObj;
 import main.java.file_downloader.fileprocess.SplitLiTag;
 import main.java.file_downloader.responseprocess.GetBody;
 import main.java.file_downloader.fileprocess.SaveText;
+import main.java.file_downloader.textprocess.GetValueByVarName;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class Downloader {
-    private String address;
+    private final String address;
     public Downloader(){
         this.address  = new ReadProperty("main/setting.properties").readProperties().getProperty("Download.url");
     }
@@ -53,18 +59,46 @@ public class Downloader {
             System.out.println(temp.getTitle() + " has saved.");
         }
     }
-    public void makeImageList(){
+    public void makeImage() throws IOException, URISyntaxException {
+        List original = makeImageList();
+        // in List, //naver.com
+        // "https:" + path -> address
+        // title + 1234(index) -> filename
+
+    }
+    public void makeList() throws IOException, URISyntaxException {
+        List original = makeImageList();
+        
+    }
+    public List makeImageList() throws IOException, URISyntaxException {
         String original ="";
+//        read Data
         try {
             Connector connector = new Connector(address);
             original = connector.getResult();
-            System.out.println(original);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-//        List<String> html = new SplitLiTag(original).getResult();
+        // get Collumn
+        List<String> splittedLiTag = new SplitLiTag(original).getResult();
+
+        // make List contains title, address
+        List<HashMap> pathList = new ArrayList<>();
+        String keyword = "img_list";
+
+        for(String str : splittedLiTag){
+            ListObj obj = new ListObj(str);
+            HashMap hashMap = new HashMap<>();
+            hashMap.put("title", obj.getTitle());
+            pathList.add(hashMap);
+            String[] imgPath = new GetValueByVarName(keyword,new Connector(obj.getAddress()).getResult()).getResult();
+            hashMap.put("imgPath",imgPath);
+        }
+
+        return pathList;
 //        new SaveText("makeImage.txt");
     }
 }

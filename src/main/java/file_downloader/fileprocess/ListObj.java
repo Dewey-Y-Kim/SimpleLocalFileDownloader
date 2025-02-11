@@ -7,8 +7,16 @@ import java.net.URISyntaxException;
 public class ListObj {
     String title;
     String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     public ListObj(String original) throws URISyntaxException, MalformedURLException {
-        System.out.println(original);
         String[] originalText = original.split("\n");
         for( String str : originalText){
             // <div class="episode-title ellipsis">은혼709화</div>
