@@ -17,7 +17,7 @@ public class test2{
 
     public static void main(String[] args) throws URISyntaxException, IOException, NoSuchAlgorithmException, KeyManagementException {
         // 자바에서 사용시 vpn 켜고 사용할 것
-        URI uri = new URI("https://11toon144.com/bbs/board.php?bo_table=toons&stx=%EC%97%B4%ED%98%88%EA%B0%95%ED%98%B8&is=1");
+        URI uri = new URI("");
         URL url = uri.toURL();
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setConnectTimeout(3000);
