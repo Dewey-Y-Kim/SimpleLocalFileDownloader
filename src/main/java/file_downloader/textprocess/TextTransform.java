@@ -134,7 +134,7 @@ public class TextTransform {
     public String getPercent(int i, int j){
         float head = (float) i;
         float body = (float) j;
-        Float result =   Float.valueOf(Math.round( (head/body) *10000)/ 100);
+        Float result =   Float.valueOf(Math.round( (head/body) *100000)/ 1000);
 
         return result.toString();
     }
