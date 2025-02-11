@@ -1,9 +1,5 @@
 package test.java;
 
-<<<<<<< HEAD
-import main.java.file_downloader.Downloader;
-=======
->>>>>>> c7acdbc3d7162b1d17f80e15337aff9bf1756235
 import main.java.file_downloader.connector.ConnectListUrl;
 import main.java.file_downloader.connector.Connector;
 
