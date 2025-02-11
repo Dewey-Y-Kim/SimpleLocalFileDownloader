@@ -29,7 +29,8 @@ public class Connector {
     }
 
     public String openConnect() throws IOException, URISyntaxException {
-        URL url = new URI(address).toURL();
+        URL url = new URL(address);
+//        URL url = new URI(address).toURL();
         HttpURLConnection connect = null;
 
         try {

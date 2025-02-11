@@ -1,15 +1,15 @@
 package main.java.file_downloader.textprocess;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 public class GetValueByVarName {
-    ArrayList<String> list;
+    List list;
     String[] result;
 
     public GetValueByVarName(String keyword, String body){
-        this.list = (ArrayList<String>) Arrays.stream(body.split("\n")).toList();
+        this.list = Arrays.stream(body.split("\n")).toList();
         this.result = setResult(keyword);
     }
 

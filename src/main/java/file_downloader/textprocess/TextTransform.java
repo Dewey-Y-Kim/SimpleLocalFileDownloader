@@ -24,13 +24,23 @@ public class TextTransform {
             // edit txtFile
             String text = editTxtFile(file);
             // remove Tag
-            SaveText saveText = new SaveText();
-            text = saveText.tagRemover(text).trim();
+            text = tagRemover(text).trim();
             // save file as same name
             writeFileWithText(file, text);
         }
     }
-
+    public String tagRemover(String tag) {
+        return tag
+//                .replaceAll("<br>", "\n")
+//                .replaceAll("<br />","\n")
+//                .replaceAll("<br/>","\n")
+                .replaceAll("<br\\s*/?>","\n")
+                .replaceAll("<span>","")
+                .replaceAll("&gt;",">")
+                .replaceAll("&lt;","<")
+                .replaceAll("</span>","");
+//                .replaceAll("<(.*?)>", "");
+    }
     // folder read
     public String[] readDirectory(String path){
         File file = new File(path);

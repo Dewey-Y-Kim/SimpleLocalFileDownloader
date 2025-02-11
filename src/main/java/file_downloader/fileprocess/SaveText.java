@@ -1,6 +1,7 @@
 package main.java.file_downloader.fileprocess;
 
 import main.java.file_downloader.ReadProperty;
+import main.java.file_downloader.textprocess.TextTransform;
 
 import java.io.*;
 import java.util.List;
@@ -21,7 +22,22 @@ public class SaveText {
 //    public SaveText(String title, String bodyText){
 //        this.fullPath = defaultPath + title +"/" +title +".txt";
 //    }
+    public SaveText(String title, String[] list){
+        this.title = title;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String str : list){
+            stringBuilder.append(str);
+            stringBuilder.append("\n");
+        }
+        this.bodyText = stringBuilder.toString();
+        this.fullPath = defaultPath + title + ".txt";
 
+    }
+    public SaveText(String path, String title, String[] list){
+        this(title,list);
+        this.defaultPath =path;
+        this.fullPath = chkPath(defaultPath+title)+ title +".txt";
+    }
     public SaveText(String title, List<String> bodyString){
         this.title = title;
         this.bodyText = buildString(bodyString);
@@ -80,7 +96,7 @@ public class SaveText {
         for(String str :bodyText){
 //            if(str.contains("<br>") || str.contains("<span>")) str = tagRemover(str);
             
-            str = tagRemover(str);
+            str = new TextTransform().tagRemover(str);
             while (str.contains("  ")){
                 str = str.replaceAll(" {2}"," ");
             }
@@ -128,18 +144,7 @@ public class SaveText {
             throw new RuntimeException(e);
         }
     }
-    public String tagRemover(String tag) {
-        return tag
-//                .replaceAll("<br>", "\n")
-//                .replaceAll("<br />","\n")
-//                .replaceAll("<br/>","\n")
-                .replaceAll("<br\\s*/?>","\n")
-                .replaceAll("<span>","")
-                .replaceAll("&gt;",">")
-                .replaceAll("&lt;","<")
-                .replaceAll("</span>","");
-//                .replaceAll("<(.*?)>", "");
-    }
+
     public String divTop (String tag) {
         return tag.replaceAll("<div>", "<p>")
                 .replaceAll("</div>", "</p>");
