@@ -131,4 +131,11 @@ public class TextTransform {
         }
         return "#".repeat(size);
     }
+    public String getPercent(int i, int j){
+        float head = (float) i;
+        float body = (float) j;
+        Float result =   Float.valueOf(Math.round( (head/body) *10000)/ 100);
+
+        return result.toString();
+    }
 }

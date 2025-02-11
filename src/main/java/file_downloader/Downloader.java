@@ -8,10 +8,13 @@ import main.java.file_downloader.imageprocess.ImageMaker;
 import main.java.file_downloader.responseprocess.GetBody;
 import main.java.file_downloader.fileprocess.SaveText;
 import main.java.file_downloader.textprocess.GetValueByVarName;
+import main.java.file_downloader.textprocess.TextTransform;
 
+import javax.xml.crypto.dsig.Transform;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,11 +73,15 @@ public class Downloader {
             String[] array = (String[]) obj.get("imgPath");
             System.out.printf("start making %s\n",title);
             for (int idx = 0; idx < array.length; idx++) {
-                System.out.printf("%s : (%d/%d)\n",title,idx + 1,array.length);
+                Float percent = (float) (Math.round((float) idx / array.length * 10000)/100);
+                System.out.printf("%s : (%d/%d) %s \n",title,idx + 1,array.length, percent.toString()+"%");
                 array[idx] = "https:" + array[idx];
-                new ImageMaker(array[idx],title,title + "-"+idx).make();
+
+                String fileIdx = new TextTransform().lPad(String.valueOf(idx),String.valueOf(array.length).length());
+                new ImageMaker(array[idx],title,title + "-"+fileIdx).make();
             }
-            System.out.printf("----------- \n complete making %s (%d / %d) (% \n ",title, index, original.size());
+            Float percent = (float) (Math.round( (float) index / original.size() * 10000) ) / 100;
+            System.out.printf("----------- \n complete making %s (%d / %d) %s ) \n ",title, index, original.size(), percent.toString()+"%" );
 
         }
 
