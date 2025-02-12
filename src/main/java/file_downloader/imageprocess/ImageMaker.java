@@ -31,7 +31,9 @@ public class ImageMaker {
     }
 
     public ImageMaker(String address, String title, String fileName) {
-        this(address,fileName);
+        this.address =address;
+        this.fileName = fileName;
+//        this(address,fileName);
         this.title = title;
         this.defaultPath = new ReadProperty("main/setting.properties")
                 .readProperties().getProperty("Download.path") + "/"
@@ -47,8 +49,9 @@ public class ImageMaker {
         if(!path.exists()){
             path.mkdirs();
         }
+        String ext = address.toLowerCase().substring(address.lastIndexOf(".")); //.jpg
+        String fullfilePath = defaultPath+"/"+ fileName + ext;
 
-        String fullfilePath = defaultPath+"/"+ fileName + address.toLowerCase().substring(address.lastIndexOf("."));
         try {
             // Image Downloader
             URL url = new URI(address).toURL();

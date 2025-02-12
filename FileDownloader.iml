@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="openjfx.javafx.swing" level="project" />
+    <orderEntry type="library" exported="" name="googlecode.json.simple" level="project" />
   </component>
 </module>

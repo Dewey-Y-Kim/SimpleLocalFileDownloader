@@ -11,8 +11,7 @@ import java.util.Iterator;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws IOException, URISyntaxException {
-        Downloader downloader = new Downloader();
-        downloader.makeFullToOnefile();;
+        new Downloader("").makeImg();;
 //        if(type.contains("http")){
 //            downloader= new Downloader(type);
 //            downloader.makeFullToOnefile();

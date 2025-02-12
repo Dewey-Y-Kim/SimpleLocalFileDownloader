@@ -27,7 +27,7 @@ public class Downloader {
     public void makeFullToOnefile() throws IOException, URISyntaxException {
         // 목록 연결
         Connector connector = new Connector(address) ;
-
+        connector.readUrl();
         GetBody titleList = new GetBody(connector.getList());
 
         List list = titleList.getResult();
@@ -46,6 +46,7 @@ public class Downloader {
     }
     public void makeFulltoMultifile() throws IOException, URISyntaxException {
         Connector connector = new Connector(address);
+        connector.readUrl();
         GetBody titleList = new GetBody(connector.getList());
         List list = titleList.getResult();
         for (int idx = (list.size()+1) / 2 ; idx>0 ; idx--) {
@@ -59,26 +60,40 @@ public class Downloader {
         }
     }
     public void makeImg() throws IOException, URISyntaxException {
-        Queue original = makeImageList();
+        List source = makeImageList();
+        Deque original = new LinkedList();
 
-        int index = 0;
-
-        for (Object map : original) {
-            index++;
-            HashMap obj = (HashMap) map;
-            String title = (String) obj.get("title");
-            String[] array = (String[]) obj.get("imgPath");
-            System.out.printf("start making %s\n",title);
-            for (int idx = 0; idx < array.length; idx++) {
-                Float percent = (float) (Math.round((float) idx / array.length * 10000)/100);
-                System.out.printf("%s : (%d/%d) %s \n",title,idx + 1,array.length, percent.toString()+"%");
-                array[idx] = "https:" + array[idx];
-
-                String fileIdx = new TextTransform().lPad(String.valueOf(idx),String.valueOf(array.length).length());
-                new ImageMaker(array[idx],title,title + "-"+fileIdx).make();
+        for (Object map : source){
+            HashMap tmp  = (HashMap) map;
+            String[] path = (String[]) tmp.get("imgPath");
+            String title = (String) tmp.get("title");
+            for (int idx = 0 ; idx < path.length ; idx ++){
+                HashMap newMap = new HashMap();
+                newMap.put("title",title);
+                String fileIdx = new TextTransform().lPad(String.valueOf(idx),String.valueOf(path.length).length());
+                newMap.put("filename",title+"-"+fileIdx);
+                newMap.put("path","https:" + path[idx]);
+                original.add(newMap);
             }
-            Float percent = (float) (Math.round( (float) index / original.size() * 10000) ) / 100;
-            System.out.printf("----------- \n complete making %s (%d / %d) %s ) \n ",title, index, original.size(), percent.toString()+"%" );
+        }
+        int index = 0;
+        Object tmp = null;
+        float lastPercent =0;
+        int originalSize= original.size();
+        while ((tmp = original.pollLast()) != null){
+            index++;
+            HashMap obj = (HashMap) tmp;
+            String title = (String) obj.get("title");
+            String filename = ((String) obj.get("filename"));
+            String path = (String) obj.get("path");
+            Float percent = (float) (Math.round((float) index / originalSize * 100000)/1000);
+            new ImageMaker(path, title, filename).make();
+            if(percent > lastPercent) {
+            System.out.printf("complete making %s (%d / %d) %s\n ",title, index, originalSize, percent.toString()+"%" );
+            } else{
+                System.out.printf("complete making %s (%d / %d) \n ",title, index, originalSize);
+            }
+
 
         }
 
@@ -96,12 +111,12 @@ public class Downloader {
         }
         
     }
-    private LinkedList makeImageList() throws IOException, URISyntaxException {
+    private List makeImageList() throws IOException, URISyntaxException {
         String original ="";
 //        read Data
         try {
-            Connector connector = new Connector(address);
-            original = connector.getResult();
+//            Connector connector = new Connector(address);
+            original = new Connector(address).readUrl();
         // 만약... 페이징이 만들어져 있다면 여기에 페이징을 추가해 original에 페이지 추가
             if(original.contains("pg_end")){
                 String endLine = patternMaker("href=\"(.*)\" class=\"pg_page pg_end",original);
@@ -125,7 +140,7 @@ public class Downloader {
         List<String> splittedLiTag = new SplitLiTag(original).getResult();
 
         // make List contains title, address
-        LinkedList<HashMap> pathList = new LinkedList<>();
+        List<HashMap> pathList = new ArrayList<>();
         String keyword = "img_list";
 
         for(String str : splittedLiTag){

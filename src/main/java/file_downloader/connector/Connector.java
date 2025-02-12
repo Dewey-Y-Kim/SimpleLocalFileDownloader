@@ -1,16 +1,19 @@
 package main.java.file_downloader.connector;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Connector {
-    private HttpURLConnection conection;
+    private HttpURLConnection connection;
     private String address;
     private String result;
 
@@ -25,39 +28,52 @@ public class Connector {
 
         this.address = address;
 
-        this.result = openConnect();
+        this.result = readUrl();
     }
 
-    public String openConnect() throws IOException, URISyntaxException {
+    private void openConnect() throws IOException, URISyntaxException {
         URL url = new URL(address);
 //        URL url = new URI(address).toURL();
         HttpURLConnection connect = null;
 
         try {
             connect = (HttpURLConnection) url.openConnection();
-            connect.setReadTimeout(5000);
+            connect.setReadTimeout(10000);
             connect.setRequestMethod("GET");
             connect.setRequestProperty("Content-Type", "application/json");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.conection = connect;
+        this.connection = connect;
 
-        return readUrl();
+    }
+    private void disConnect(){
+        if(connection !=null) connection.disconnect();
+    }
+    public JSONObject getJsonObj() throws URISyntaxException, IOException, ParseException {
+        openConnect();
+        StringBuilder stringBuilder = new StringBuilder();
+        InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
+        int i;
+        while ( (i = inputStreamReader.read())!=-1){
+            stringBuilder.append((char) i );
+        }
+        disConnect();
+        return  (JSONObject) new JSONParser().parse(stringBuilder.toString());
     }
 
-
-    private String readUrl() {
+    public String readUrl() throws IOException, URISyntaxException {
+        openConnect();
         String result = null;
         try {
-            if(conection.getResponseCode() == 200) {
-                result = readResopnseData(conection.getInputStream());
+            if(connection.getResponseCode() == 200) {
+                result = readResopnseData(connection.getInputStream());
             }
         } catch (IOException e) {
              e.printStackTrace();
          }
-
-            conection.disconnect();
+        this.result =result;
+        connection.disconnect();
         return result;
     }
 
