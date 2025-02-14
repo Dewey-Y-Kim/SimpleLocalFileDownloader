@@ -12,7 +12,9 @@ public class ReadText {
     public ReadText(String path){
         this.fullpath = path;
     }
-
+    public String getBody(){
+        return body;
+    }
     public List<String> readTxt(boolean title) throws IOException {
 
         FileReader fileReader = new FileReader(fullpath);

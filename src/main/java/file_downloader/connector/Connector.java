@@ -1,9 +1,11 @@
 package main.java.file_downloader.connector;
 
+import main.java.file_downloader.ReadProperty;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +13,22 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 public class Connector {
-    private HttpURLConnection connection;
+    private HttpsURLConnection connection;
     private String address;
     private String result;
-
+    private int response;
+    int attampt = Integer.parseInt(new ReadProperty("main/setting.properties").readProperties().getProperty("MaxAttampt"));
     public String getResult(){
         return result;
     }
+
+    public int getResponse() {
+        return response;
+    }
+
     public List getList(){
         return Arrays.stream(result.split("\n")).toList();
     }
@@ -34,18 +43,34 @@ public class Connector {
     private void openConnect() throws IOException, URISyntaxException {
         URL url = new URL(address);
 //        URL url = new URI(address).toURL();
-        HttpURLConnection connect = null;
-
-        try {
-            connect = (HttpURLConnection) url.openConnection();
-            connect.setReadTimeout(10000);
-            connect.setRequestMethod("GET");
-            connect.setRequestProperty("Content-Type", "application/json");
-        } catch (IOException e) {
-            e.printStackTrace();
+        HttpsURLConnection connect = null;
+        // max connect restiction = property
+        int thisAttampt=0;
+        while (thisAttampt<attampt && (connect == null || connect.getResponseCode() != 200)) {
+            thisAttampt ++;
+            try {
+                connect = (HttpsURLConnection) url.openConnection();
+                connect.setReadTimeout(5000);
+                connect.setRequestMethod("GET");
+                connect.setRequestProperty("Content-Type", "application/json");
+                this.response = connect.getResponseCode();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         this.connection = connect;
 
+    }
+    public HttpsURLConnection setReadTimeout(int time){
+        this.connection.setReadTimeout(time);
+        return this.connection;
+    }
+    public HttpsURLConnection setRequestProp(String propety, String value){
+        this.connection.setRequestProperty(propety,value);
+        return connection;
+    }
+    public InputStream getInputstream() throws IOException {
+        return this.connection.getInputStream();
     }
     private void disConnect(){
         if(connection !=null) connection.disconnect();

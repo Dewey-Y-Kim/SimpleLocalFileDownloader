@@ -138,4 +138,14 @@ public class TextTransform {
 
         return result.toString();
     }
+    public String patternMaker(String originalPattern, String str){
+        Pattern pattern = Pattern.compile(originalPattern);
+        Matcher matcher = pattern.matcher(str);
+        String text = "";
+        while ( matcher.find()){
+            text= matcher.group();
+        }
+        return text.replaceFirst("\\S*=\"","").replaceFirst("\"(.*)","");
+
+    }
 }
