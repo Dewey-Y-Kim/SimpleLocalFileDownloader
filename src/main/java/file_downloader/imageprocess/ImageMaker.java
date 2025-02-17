@@ -1,6 +1,7 @@
 package main.java.file_downloader.imageprocess;
 
 import main.java.file_downloader.ReadProperty;
+import main.java.file_downloader.fileprocess.ControlFile;
 import main.java.file_downloader.fileprocess.ReportError;
 import main.java.file_downloader.textprocess.ImageType;
 
@@ -41,11 +42,8 @@ public class ImageMaker {
         this(address, title,filename);
     }
     public void make() throws URISyntaxException, NullPointerException, IOException {
-        String result;
-        File path = new File(defaultPath);
-        if(!path.exists()){
-            path.mkdirs();
-        }
+        new ControlFile(defaultPath).chkpath();
+
         String ext = address.toLowerCase().substring(address.lastIndexOf(".")); //.jpg
         String fullfilePath = defaultPath+"/"+ fileName + ext;
         fullfilePath.replaceAll("//","/");
@@ -60,16 +58,13 @@ public class ImageMaker {
                 connection.setConnectTimeout(2000);
                 connection.setRequestProperty("content-type", "image/" + address.toLowerCase().substring(address.lastIndexOf(".") + 1));
             }
-            InputStream in = connection.getInputStream();
-            File file = new File(fullfilePath);
-            if( ! file.exists()) file.createNewFile();
-            int i;
-            FileOutputStream fileOutputStream = new FileOutputStream(fullfilePath);
-            while ((i = in.read()) != -1) {
-                fileOutputStream.write(i);
-            }
+            InputStream inputStream = connection.getInputStream();
 
-            fileOutputStream.flush();
+            // 파일 생성
+            new ControlFile(fullfilePath, inputStream  ).createFile();
+
+            inputStream.close();
+
         } catch (FileNotFoundException e) {
             new ReportError(new Object(){}.getClass().getEnclosingClass().getName(),e.getClass().getName()+"\n" + fileName,address);
             throw new RuntimeException(e);

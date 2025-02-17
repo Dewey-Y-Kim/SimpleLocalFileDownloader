@@ -44,7 +44,6 @@ public class ListToImg extends Thread{
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-
             }
             if(percent > lastPercent) {
                 System.out.printf("complete making %s (%d / %d) %s\n ",title, total, total, percent.toString()+"%" );
