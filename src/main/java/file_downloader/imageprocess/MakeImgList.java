@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-public class MakeHashList extends Thread{
+public class MakeImgList extends Thread{
     String address;
     List pathList;
     Iterator iterator;
-    MakeHashList(List pathList, Iterator iterator, String address){
+    MakeImgList(List pathList, Iterator iterator, String address){
         this.address = address;
         this.pathList = pathList;
         this.iterator = iterator;
@@ -74,7 +74,7 @@ public class MakeHashList extends Thread{
         }
         super.interrupt();
     }
-        public String getAddress(String originalTag){
+    public String getAddress(String originalTag){
         String str = originalTag;
         String regex = "'./(.*)";
         String result = new TextTransform().patternMaker(regex, str).replaceFirst("'.","").replaceAll("'","");

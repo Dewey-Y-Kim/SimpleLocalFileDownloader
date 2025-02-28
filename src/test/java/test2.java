@@ -1,119 +1,160 @@
 package test.java;
 
-import main.java.file_downloader.Downloader;
-import main.java.file_downloader.imageprocess.ImageMaker;
+import main.java.file_downloader.connector.Connector;
 import main.java.file_downloader.textprocess.TextTransform;
+import org.junit.Test;
 
-import javax.net.ssl.*;
-import java.io.*;
-import java.net.*;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.regex.MatchResult;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class test2{
-
-    public static void main(String[] args) throws URISyntaxException, IOException, NoSuchAlgorithmException, KeyManagementException {
-//        // 자바에서 사용시 vpn 켜고 사용할 것
-//        URI uri = new URI("");
-//        URL url = uri.toURL();
-//        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-//        connection.setConnectTimeout(3000);
-//        //GET
-//        //User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0
-//        //Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-//        //Accept-Language: en-US,en;q=0.5
-//        //Accept-Encoding: gzip, deflate, br, zstd
-//        //Connection: keep-alive
-//        //Upgrade-Insecure-Requests: 1
-//        //Sec-Fetch-Dest: document
-//        //Sec-Fetch-Mode: navigate
-//        //Sec-Fetch-Site: none
-//        //Sec-Fetch-User: ?1
-//        //Priority: u=0, i
-//        connection.setRequestMethod("GET");
-//        System.out.println(connection.getResponseCode());
-//
-//
-//        InputStream inputStream = connection.getInputStream();
-//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader( inputStream));
-//        String str = "";
-//        StringBuilder stringBuilder = new StringBuilder();
-//        if(connection.getResponseCode() == 200){
-//            while ((str = bufferedReader.readLine()) != null){
-//                stringBuilder.append(str);
-//                stringBuilder.append("\n");
-//            }
-//        }
-//        System.out.println(stringBuilder.toString());
-//
-////        File file = new File("/home/dewey/Downloads/books/detail.html");
-////        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-////        List<String> list  = new ArrayList<>();
-////
-////        // get var to Array
-////        String keyword = "var img_list";
-////        String str;
-////        String[] result= null;
-////        //finder
-////        while((str = bufferedReader.readLine())!=null){
-////            if (str.contains(keyword)){
-////                result = str.replaceFirst("(.*)\\[","").replaceFirst("]","").replaceAll("\"","").replaceAll(";","").split(",");
-////                break;
-////            }
-////        }
-////        for(int idx = 0 ; idx < result.length ; idx ++ ){
-////            result[idx] = "https:"+result[idx];
-////            System.out.println(result[idx]);
-////        }
-////
-//        //        SaveText saveText = new SaveText("test",list);
-////        saveText.save();
-//        // if you want to get png or jpg ... you can do it
-////        String address = "";
-////        String path = "main/setting.properties";
-////        String defaultPath = new ReadProperty(path).readProperties().getProperty("Download.path");
-////        String fileName = "test";
-////        String result;
-////        URL url = new URI(address).toURL();
-////        String extension = address.substring(address.indexOf('.') + 1);
-////
-////        BufferedImage image = ImageIO.read(url);
-////        File file = new File(defaultPath + fileName);
-////
-////        ImageIO.write(image, extension, file);
-////        result = fileName + " is complete.";
-//        //p3p:
-//
-//
-////        File file = new File("/home/dewey/Downloads/image.txt");
-////        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-////        String str;
-////        Integer idx = -1;
-////
-////        String title = "화무십일홍";
-////        while((str = bufferedReader.readLine())!=null){
-////            if(str.length() >1)  {
-////                idx++;
-////                String filename = title+"-"+ new TextTransform().lPad((idx.toString()), 3) +".jpeg";
-////                new ImageMaker( str,"화무십일홍", filename).make();
-////            }
-////
-////            System.out.printf("%d   %s is downloaded\n",idx ,idx+".png");
-//        }
-        new Downloader("").makeImgList();
-    }
-    public String patternMaker(String str){
-        Pattern pattern = Pattern.compile("src=\"(.*)\" ");
-        Matcher matcher = pattern.matcher(str);
-        String text = "";
-        while ( matcher.find()){
-            text= matcher.group();
+    @Test
+    public void test(){
+        String s = "\"og:title\" content=\"고블린 슬레이어 외전 : 이어 원\" />";
+        Pattern pattern = Pattern.compile("(?>\"og:title\" content=\")(.*)\" />");
+        Matcher matcher = pattern.matcher(s);
+        if(matcher.find()){
+            System.out.println(matcher.group(1));
         }
-        return text.replaceFirst("\\S*=\"","").replaceFirst("\"(.*)","");
+    }
+    @Test
+    public void getResponse(){
+        String address = "";
+        Connector connector = null;
+        String result = null;
+        try {
+            connector = new Connector(address);
+            result = connector.getResult();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
+        result = new TextTransform().TagToEnd("body", result);
+
+        //        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+//        Matcher matcher = pattern.matcher(result);
+//
+//        if (matcher.find()) {
+//            String bodyContent = matcher.group(1).replaceAll("\\s\\s","").replaceAll("\\n\\n","\n");
+//            System.out.println("Body Content: " + bodyContent);
+//        } else {
+//            System.out.println("No <body> tag found.");
+//        }
+        System.out.println(result);
     }
 
+    @Test
+    public void getImg(){
+        String str ="                        <li>\n" +
+                "                <input class=\"bulk-checkbox\" type=\"checkbox\" aria-labelledby=\"g6276500605894656\"><i></i>\n" +
+                "                <button type=\"button\" class=\"episode is-series\" data-episode-id=\"6276500605894656\" data-episode-type=\"g\" data-purchased=\"false\" \n" +
+                "                    data-free=\"true\" data-viewed=\"false\" data-locked=\"false\" data-ga-on=\"click\" data-ga-event-action=\"goto-episode\" data-ga-event-label=\"바나나툰\" \n" +
+                "                    onclick=\"location.href='./board.php?bo_table=toons&wr_id=1742751&stx=고블린 슬레이어 외전 : 이어 원&is=7583'\"\n" +
+                "                >\n" +
+                "                    <div class=\"banner-wrap\">\n" +
+                "                        <div class=\"episode-banner\" style=\"background-image: url('//11toon7.com/01/1742751.webp');\"></div>\n" +
+                "                        <div class=\"d-day-wrap\">\n" +
+                "                            <span class=\"lock\"></span>\n" +
+                "                            <span class=\"d-day\"></span>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                    <div id=\"g6276500605894656\" class=\"episode-seq\">\n" +
+                "                        <div class=\"episode-name ellipsis\"></div>\n" +
+                "                        <div class=\"episode-title ellipsis\">고블린 슬레이어 외… 이어 원 91화</div>\n" +
+                "                        <div class=\"free-date\">23.09.06<font color=\"red\">(22)</font></div>\n" +
+                "                    </div>\n" +
+                "                    <div class=\"episode-price\">\n" +
+                "                        <span class=\"list_hit \">10177                            \n" +
+                "                        </span>\n" +
+                "                    </div>\n" +
+                "<!--                    <div class=\"episode-price\">-->\n" +
+                "<!--                        <span>무료</span>-->\n" +
+                "<!--                    </div>-->\n" +
+                "                </button>\n" +
+                "            </li>"
+                +"                        <li>\n" +
+                "                <input class=\"bulk-checkbox\" type=\"checkbox\" aria-labelledby=\"g6276500605894656\"><i></i>\n" +
+                "                <button type=\"button\" class=\"episode is-series\" data-episode-id=\"6276500605894656\" data-episode-type=\"g\" data-purchased=\"false\" \n" +
+                "                    data-free=\"true\" data-viewed=\"false\" data-locked=\"false\" data-ga-on=\"click\" data-ga-event-action=\"goto-episode\" data-ga-event-label=\"바나나툰\" \n" +
+                "                    onclick=\"location.href='1./board.php?bo_table=toons&wr_id=1742751&stx=1고블린 슬레이어 외전 : 이어 원&is=7583'\"\n" +
+                "                >\n" +
+                "                    <div class=\"banner-wrap\">\n" +
+                "                        <div class=\"episode-banner\" style=\"background-image: url('//11toon7.com/01/1742751.webp');\"></div>\n" +
+                "                        <div class=\"d-day-wrap\">\n" +
+                "                            <span class=\"lock\"></span>\n" +
+                "                            <span class=\"d-day\"></span>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                    <div id=\"g6276500605894656\" class=\"episode-seq\">\n" +
+                "                        <div class=\"episode-name ellipsis\"></div>\n" +
+                "                        <div class=\"episode-title ellipsis\">고블린 슬레이어 외… 이어 원 91화</div>\n" +
+                "                        <div class=\"free-date\">23.09.06<font color=\"red\">(22)</font></div>\n" +
+                "                    </div>\n" +
+                "                    <div class=\"episode-price\">\n" +
+                "                        <span class=\"list_hit \">10177                            \n" +
+                "                        </span>\n" +
+                "                    </div>\n" +
+                "<!--                    <div class=\"episode-price\">-->\n" +
+                "<!--                        <span>무료</span>-->\n" +
+                "<!--                    </div>-->\n" +
+                "                </button>\n" +
+                "            </li>";
+
+        ;
+        String path1 =  "<button[^>]*onclick=\"location\\.href='([^']+)'\"";
+        String path2 = "<button[^>]*location\\.href='([^']+)'";
+        String path4 = "<button[^>]*href='([^']+)'";
+
+        // <div class="episode-title ellipsis">고블린 슬레이어 외… 이어 원 91화</div>
+        String chapter = "<div[^>]*([^1]+)</div>";
+        String chapter2 = "<div class=\"episode-title ellipsis\">([^<]+)</div>";
+        // [^>]* : "닫는 꺾쇠(>)가 나오기 전까지의 모든 문자"
+        String chapter3 = "<div class=\"episode-title [^>]*>([^<]+)</div>";
+
+        String result = new TextTransform().patternMaker(path1, str);
+        System.out.println( result);
+//        Pattern pattern = Pattern.compile(path4);
+//
+////        System.out.println(str+"\n");
+//        Matcher matcher = pattern.matcher(str);
+////
+//        while (matcher.find()) {
+//            String url = matcher.group(1);
+//            System.out.println("추출된 URL: \n" + url+"\n");
+//        }
+////        Pattern pattern = Pattern.compile(regex);
+////        Matcher matcher = pattern.matcher(str);
+////
+////        while (matcher.find()) {
+////            String url = matcher.group(1);
+////            System.out.println("추출된 URL: " + url);
+////        }
+    }
+    @Test
+    public void regex(){
+        String url = null;
+//        문자들/+ 숫자
+//        String pattern = "(?<=[\\D+]/)\\d+";
+//        문자 + /다음 숫자만
+//        String pattern = "(?<=[\\D]/)\\d+";
+//        / 다음 숫자만
+//        12725
+//        String pattern = "(?<=/)\\d+(?=/)";
+        String pattern = "(?<=/)(\\d+)(?=/)?";
+//        w1btoon/12725/4
+//        String pattern = "(?<=/)[^.]+(?=/)";
+        // w1ebtoon
+//        String pattern = "(?<=/)[^./]+(?=/)";
+
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(url);
+        while (matcher.find()){
+            System.out.println(matcher.group());
+        }
+
+    }
 }

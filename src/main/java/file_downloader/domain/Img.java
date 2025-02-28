@@ -1,25 +1,51 @@
 package main.java.file_downloader.domain;
 
 public class Img {
-    private String chaptor;
-    private String address;
-    public Img(String chaptor, String address){
-        this.chaptor = chaptor;
-        this.address = address;
+    String path;
+    String title;
+    String webtoonId;
+    String chapter;
+    int idx;
+    String filename;
+    public Img(String title, String chapter, String path,int idx, String filename){
+        this.title = title;
+        this.chapter = chapter;
+        this.path = path;
+        this.idx = idx;
+        this.filename = filename;
+
     }
-    public String getChaptor() {
-        return chaptor;
+    Img(String title, String chapter, String webtoonId, String list_episode,String path, int idx, String filename){
+        this(title, chapter, path, idx, filename);
+        this.chapter=list_episode;
+        this.webtoonId = webtoonId;
+    }
+    public String getPath() {
+        return path;
     }
 
-    public void setChaptor(String chaptor) {
-        this.chaptor = chaptor;
+    public String getTitle() {
+        return title;
     }
 
-    public String getAddress() {
-        return address;
+    public String getChapter() {
+        return chapter;
+    }
+    public String getWebtoonId() {
+        return webtoonId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public String getFilename() {
+        return filename;
+    }
+
+    @Override
+    public String toString() {
+        return "Img{" +
+                "path='" + path + '\'' + "\n" +
+                ", title='" + title + '\'' + "\n" +
+                ", webtoonId='" + webtoonId + '\'' + "\n" +
+                ", chapter='" + chapter + '\'' + "\n" +
+                '}';
     }
 }

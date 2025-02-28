@@ -8,9 +8,10 @@ public class ImageArr {
     int index;
     float readPercent;
     ArrayList<Img> imgList;
-    public ImageArr(String title, String chapter, String[] address){
+    public ImageArr(String title, String chapter, String[] address) {
         this.title = title;
-        for (String detailAddress : address)
-            imgList.add(0, new Img(chapter, "http:"+detailAddress));
+        for (String detailAddress : address) {
+//            imgList.add(0, new Img(chapter, "http:"+detailAddress));
+        }
     }
 }

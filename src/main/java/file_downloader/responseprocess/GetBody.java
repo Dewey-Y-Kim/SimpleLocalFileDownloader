@@ -78,8 +78,6 @@ public class GetBody {
                 result.add(smallUrl);
             }
         }
-//        System.out.println("temp = " + temp);
-//        System.out.println("result = " + result);
         this.resultText =  result;
     }
     private String patternMatcher(Pattern pattern, String str){

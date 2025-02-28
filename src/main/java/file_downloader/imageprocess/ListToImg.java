@@ -1,12 +1,10 @@
 package main.java.file_downloader.imageprocess;
 
+import main.java.file_downloader.domain.Img;
 import main.java.file_downloader.fileprocess.ReportError;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.Queue;
 
 public class ListToImg extends Thread{
@@ -29,15 +27,16 @@ public class ListToImg extends Thread{
         String errorAddress="";
         while ((tmp = original.pollLast()) != null){
             index = total - original.size();
-            HashMap obj = (HashMap) tmp;
-            String title = (String) obj.get("title");
-            String filename = ((String) obj.get("filename"));
-            String path = (String) obj.get("path");
-            errorFile = filename;
+            Img obj = (Img) tmp;
+            String title = obj.getTitle();
+            String chapter = obj.getChapter();
+            String filename =  obj.getFilename();
+            String path = obj.getPath();
+
             errorAddress = path;
-            Float percent = (float) ((Math.round((float) index / total * 100))/100)*100;
+            Float percent = (float) ((Math.round((float) index / total * 1000))/1000)*100;
             try{
-                new ImageMaker(path, title, filename).make();
+                new ImageMaker(path, title, chapter, filename).make();
             } catch (Exception e){
                 try {
                     new ReportError(new Object(){}.getClass().getEnclosingClass().getName(),e.getClass().getName()+"\n" + errorFile,errorAddress);

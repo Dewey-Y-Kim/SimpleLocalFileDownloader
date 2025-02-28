@@ -1,26 +1,25 @@
 package main.java.file_downloader.connector;
 
 import main.java.file_downloader.ReadProperty;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 public class Connector {
     private HttpsURLConnection connection;
     private String address;
     private String result;
+    private URL url;
     private int response;
     int attampt = Integer.parseInt(new ReadProperty("main/setting.properties").readProperties().getProperty("MaxAttampt"));
+
     public String getResult(){
         return result;
     }
@@ -29,6 +28,12 @@ public class Connector {
         return response;
     }
 
+    public String getHost() throws URISyntaxException, IOException {
+        return url.getHost();
+    }
+    public String getPath(){
+        return url.getPath();
+    }
     public List getList(){
         return Arrays.stream(result.split("\n")).toList();
     }
@@ -36,12 +41,12 @@ public class Connector {
     public Connector(String address) throws IOException, URISyntaxException {
 
         this.address = address;
-
+        this.url = new URL(address);
         this.result = readUrl();
+
     }
 
     private void openConnect() throws IOException, URISyntaxException {
-        URL url = new URL(address);
 //        URL url = new URI(address).toURL();
         HttpsURLConnection connect = null;
         // max connect restiction = property
@@ -75,17 +80,17 @@ public class Connector {
     private void disConnect(){
         if(connection !=null) connection.disconnect();
     }
-    public JSONObject getJsonObj() throws URISyntaxException, IOException, ParseException {
-        openConnect();
-        StringBuilder stringBuilder = new StringBuilder();
-        InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
-        int i;
-        while ( (i = inputStreamReader.read())!=-1){
-            stringBuilder.append((char) i );
-        }
-        disConnect();
-        return  (JSONObject) new JSONParser().parse(stringBuilder.toString());
-    }
+//    public JSONObject getJsonObj() throws URISyntaxException, IOException, ParseException {
+//        openConnect();
+//        StringBuilder stringBuilder = new StringBuilder();
+//        InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
+//        int i;
+//        while ( (i = inputStreamReader.read())!=-1){
+//            stringBuilder.append((char) i );
+//        }
+//        disConnect();
+//        return  (JSONObject) new JSONParser().parse(stringBuilder.toString());
+//    }
 
     public String readUrl() throws IOException, URISyntaxException {
         openConnect();

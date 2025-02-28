@@ -1,7 +1,5 @@
 package main.java.file_downloader.textprocess;
 
-import main.java.file_downloader.fileprocess.SaveText;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,14 +136,42 @@ public class TextTransform {
 
         return result.toString();
     }
+    ///  수정 필요...
     public String patternMaker(String originalPattern, String str){
         Pattern pattern = Pattern.compile(originalPattern);
         Matcher matcher = pattern.matcher(str);
         String text = "";
         while ( matcher.find()){
-            text= matcher.group();
+
+            text= matcher.group(1);
+//             text = matcher.group( matcher.end() );
         }
         return text.replaceFirst("\\S*=\"","").replaceFirst("\"(.*)","");
+    }
+    public String patternMaker(String originalPattern, String str, int idx){
+        Pattern pattern = Pattern.compile(originalPattern);
+        Matcher matcher = pattern.matcher(str);
+        String text = "";
+        while ( matcher.find()){
 
+            if (idx <0){
+                text = matcher.group();
+            }else{
+                text= matcher.group(idx);
+            }
+//             text = matcher.group( matcher.end() );
+        }
+        return text.replaceFirst("\\S*=\"","").replaceFirst("\"(.*)","");
+    }
+    public String TagToTag(String tag, String str) {
+
+        // Body만.
+        String regex = "<" + tag + ".*?>([\\s\\S]*?)<\\/" + tag + ">";
+        return patternMaker(regex, str);
+    }
+    public String TagToEnd(String tag, String str){
+        //Body이후..
+        String regex = "<"+tag+".*?>([\\s\\S]*)";
+        return patternMaker(regex, str);
     }
 }

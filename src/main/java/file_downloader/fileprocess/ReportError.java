@@ -26,15 +26,18 @@ public class ReportError {
                 idx++;
                 errorList = new File(filename+"_" + idx + ".txt");
             }
+            errorList.createNewFile();
         } else{
             errorList = new File(filename+".txt");
+            errorList.createNewFile();
         }
         String message ="";
 
         if (str!=null||str != "") message+=str+"\n";
-                message+=errorList+"\n"+original;
-        FileWriter errorListWriter = new FileWriter( message,true);
-        errorListWriter.write(original+"\n-------\n");
+                message+=original;
+
+        FileWriter errorListWriter = new FileWriter( errorList,true);
+        errorListWriter.write(message +"\n"+original+"\n-------\n");
         errorListWriter.flush();
     }
 }

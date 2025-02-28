@@ -21,23 +21,35 @@ public class SplitLiTag {
             throw new RuntimeException(e);
         }
     }
+    public SplitLiTag(String original, String keyword){
+        this.original =original;
+        try {
+            result = splitLitag(original, keyword);
+        }catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public List<String> getResult() {
         return result;
     }
-
     private List<String> splitLitag(String original) throws MalformedURLException, URISyntaxException {
+        return splitLitag(original,"comic-episode-list");
+    }
+    private List<String> splitLitag(String original, String id) throws MalformedURLException, URISyntaxException {
         String[] originalText = original.split("\n");
         List list = Arrays.stream(originalText).toList();
         Iterator iterator = list.iterator();
-        boolean ulfound = false;
-        boolean lifound = false;
+        boolean ulFound = false;
+        boolean liFound = false;
         int depth = 0;
         StringBuilder stringBuilder = new StringBuilder();
         List<String> result = new ArrayList<>();
         while ( iterator.hasNext()){
             String text = (String) iterator.next();
-            if(text.contains("comic-episode-list")){
-                ulfound =true;
+            if(text.contains(id)){
+                ulFound =true;
             }
 
             if(text.contains("<ul")){
@@ -47,26 +59,26 @@ public class SplitLiTag {
                 depth--;
             }
             if ( depth <= 0 ){
-                ulfound = false;
+                ulFound = false;
             }
             // li 기준으로 자르기
-            if(ulfound && text.contains("<li")){
+            if(ulFound && text.contains("<li")){
                 depth++;
             }
-            if(ulfound && text.contains("</li")){
+            if(ulFound && text.contains("</li")){
                 stringBuilder.append(text);
                 result.add(stringBuilder.toString());
                 stringBuilder = new StringBuilder();
                 depth--;
             }
             if( depth > 1){
-                lifound = true;
+                liFound = true;
             }
             if( depth <= 1){
-                lifound =false;
+                liFound =false;
             }
 
-            if ( lifound ){
+            if (liFound){
                 stringBuilder.append(text);
                 stringBuilder.append("\n");
             }

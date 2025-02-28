@@ -5,7 +5,9 @@ import main.java.file_downloader.fileprocess.ControlFile;
 import main.java.file_downloader.fileprocess.ReportError;
 import main.java.file_downloader.textprocess.ImageType;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.*;
 
 public class ImageMaker {
@@ -15,6 +17,7 @@ public class ImageMaker {
     private String address;
     private HttpURLConnection connection; // connectionToImage
     private String title;
+    private String chapter;
     private final int MAX_ATTAMPT = Integer.parseInt(new ReadProperty("main/setting.properties").readProperties().getProperty("MaxAttampt"));
 
     enum TYPE{
@@ -28,15 +31,22 @@ public class ImageMaker {
 //        String type = address.substring(address.lastIndexOf("."));
     }
 
-    public ImageMaker(String address, String title, String fileName) {
+    public ImageMaker(String address, String chapter, String fileName) {
 //        this.address =address;
 //        this.fileName = fileName;
         this(address,fileName);
+        this.chapter = chapter;
+        this.defaultPath = new ReadProperty("main/setting.properties")
+                .readProperties().getProperty("Download.path") + "/imgDownloader/"
+                + chapter;
+
+    }
+    public ImageMaker(String address, String title, String chapter, String filename){
+        this(address, chapter,filename);
         this.title = title;
         this.defaultPath = new ReadProperty("main/setting.properties")
                 .readProperties().getProperty("Download.path") + "/imgDownloader/"
-                + title;
-
+                + title +"/"+chapter;
     }
     public ImageMaker(String address, String title, String filename, ImageType imageType){
         this(address, title,filename);
@@ -55,7 +65,7 @@ public class ImageMaker {
                 attampt ++;
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setConnectTimeout(2000);
+                connection.setConnectTimeout(5000);
                 connection.setRequestProperty("content-type", "image/" + address.toLowerCase().substring(address.lastIndexOf(".") + 1));
             }
             InputStream inputStream = connection.getInputStream();
@@ -63,7 +73,6 @@ public class ImageMaker {
             // 파일 생성
             new ControlFile(fullfilePath, inputStream  ).createFile();
 
-            inputStream.close();
 
         } catch (FileNotFoundException e) {
             new ReportError(new Object(){}.getClass().getEnclosingClass().getName(),e.getClass().getName()+"\n" + fileName,address);

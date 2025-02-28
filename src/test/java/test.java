@@ -1,57 +1,62 @@
 package test.java;
 
-import main.java.file_downloader.fileprocess.ReadText;
-import main.java.file_downloader.imageprocess.ImageMaker;
-import org.json.simple.parser.ParseException;
+import main.java.file_downloader.connector.Connector;
+import main.java.file_downloader.textprocess.TextTransform;
+import org.junit.Test;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.*;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class test{
-
-    public static void main(String[] args) throws URISyntaxException, IOException, NoSuchAlgorithmException, KeyManagementException, ParseException {
-        File file = new File("src/main/multiMaker.java");
-        System.out.println(file.getAbsolutePath());
-        if (file.isDirectory()) {
-            for(File f :file.listFiles()){
-                System.out.println(f.getName());
+public class test {
+    public static void main(String[] ag){
+        Iterator agIter = Arrays.stream(ag).iterator();
+        while (agIter.hasNext()){
+            System.out.println(agIter.next().getClass().getName());
+        }
+    }
+    @Test
+    public void removePtag(){
+        String str = "<p> adga </p>";
+        System.out.println(str.replaceAll("<(/?)p>","\n").replaceAll("\n\n","\n"));
+    }
+    @Test
+    public void test(){
+        Connector connector ;
+        InputStream inputStream;
+            try {
+                connector = new Connector("https://t60.hoduhodu.com/webtoondata/4803/img/1/image31.jpg");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
             }
-        }
-        if (file.isFile()){
-            FileInputStream fileInputStream = new FileInputStream(file);
-            System.out.println(fileInputStream.readAllBytes().length
-            );
-        }
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        String str="";
-        StringBuilder stringBuilder = new StringBuilder();
-        while((str = bufferedReader.readLine()) != null){
-            stringBuilder.append(str);
-        }
-        System.out.println(stringBuilder.toString());
-    }
-    public static void runTread(){
-        List list = new ArrayList<>();
-        for(int i=0; i<5; i++) list.add(i);
-        Iterator idx = list.iterator();
-        System.out.println(list.size());
-    }
 
-    public static String patternMaker(String originalPattern, String str){
-        Pattern pattern = Pattern.compile(originalPattern);
-        Matcher matcher = pattern.matcher(str);
-        String text = "";
-        while ( matcher.find()){
-            text= matcher.group();
+            try {
+        if(connector != null ){
+                inputStream = connector.getInputstream();
+                byte[] bytes = new byte[1024];
+
         }
-        return text.replaceFirst("\\S*=\"","").replaceFirst("\"(.*)","");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+    }
+    @Test
+    public void test2() throws IOException {
+
     }
 }

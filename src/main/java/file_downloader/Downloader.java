@@ -2,22 +2,14 @@ package main.java.file_downloader;
 
 import main.java.file_downloader.connector.ConnectListUrl;
 import main.java.file_downloader.connector.Connector;
-import main.java.file_downloader.fileprocess.ReportError;
-import main.java.file_downloader.imageprocess.ImgProcess;
-import main.java.file_downloader.imageprocess.ListToImg;
-import main.java.file_downloader.responseprocess.ListObj;
-import main.java.file_downloader.responseprocess.SplitLiTag;
-import main.java.file_downloader.responseprocess.GetBody;
 import main.java.file_downloader.fileprocess.SaveText;
-import main.java.file_downloader.textprocess.GetValueByVarName;
-import main.java.file_downloader.textprocess.TextTransform;
+import main.java.file_downloader.imageprocess.ImgProcess;
+import main.java.file_downloader.responseprocess.GetBody;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.List;
 
 public class Downloader {
     private final String address;
