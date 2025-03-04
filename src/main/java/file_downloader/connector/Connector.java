@@ -56,6 +56,8 @@ public class Connector {
             try {
                 connect = (HttpsURLConnection) url.openConnection();
                 connect.setReadTimeout(5000);
+                connect.setReadTimeout(5000);
+
                 connect.setRequestMethod("GET");
                 connect.setRequestProperty("Content-Type", "application/json");
                 this.response = connect.getResponseCode();

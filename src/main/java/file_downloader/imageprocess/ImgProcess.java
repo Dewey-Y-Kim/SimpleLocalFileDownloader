@@ -199,7 +199,7 @@ public class ImgProcess implements ImageProcesser{
         Integer idx = 0;
         Float percent = (float) 0;
         int numberOfItem = original.size();
-        for ( int i  = 0; i < Runtime.getRuntime().availableProcessors() +1; i++){
+        for ( int i  = 0; i < Runtime.getRuntime().availableProcessors() /3 *2; i++){
             new ListToImg(original, idx, percent, numberOfItem).start();
         }
     }

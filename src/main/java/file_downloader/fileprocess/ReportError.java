@@ -6,20 +6,20 @@ import java.io.IOException;
 import java.util.Date;
 
 public class ReportError {
-    File file = new File("./ErrorOccurin.txt");
+    File file = new File("./errorMessage.txt");
     File errorList;
-    public ReportError(String error) throws IOException {
+    public ReportError(String message) throws IOException {
         if(!file.exists()) file.createNewFile();
         FileWriter fileWriter = new FileWriter(file,true);
-        fileWriter.write(error+"\n"+new Date()+"\n--------------\n");
+        fileWriter.write(message+"\n"+new Date()+"\n--------------\n");
         fileWriter.flush();
 
     }
-    public ReportError(String str, String error, String original) throws IOException {
-        this(error);
+    public ReportError(String str, String errortype, String additionalMessage) throws IOException {
+        this(errortype);
         int idx = 0;
         String filename ="errorMessage";
-        if(original.length() >1000){
+        if(additionalMessage.length() >1000){
             filename="./LargeMessage";
             errorList = new File(filename +"_" + idx +".txt");
             while(errorList.exists()){
@@ -34,10 +34,10 @@ public class ReportError {
         String message ="";
 
         if (str!=null||str != "") message+=str+"\n";
-                message+=original;
+                message+=additionalMessage;
 
         FileWriter errorListWriter = new FileWriter( errorList,true);
-        errorListWriter.write(message +"\n"+original+"\n-------\n");
+        errorListWriter.write(message + "\n-------\n");
         errorListWriter.flush();
     }
 }
