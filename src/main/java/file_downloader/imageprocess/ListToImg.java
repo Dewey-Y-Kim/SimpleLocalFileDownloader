@@ -14,7 +14,9 @@ public class ListToImg extends Thread{
     Deque original;
     Integer index = 0;
     Float lastPercent = (float) -1.0;
+    int complete = 0;
     int total = 0;
+    int success =0;
     public ListToImg(Queue<Img> queue,Integer index, Float lastPercent, int total){
         this.original = (Deque) queue;
         this.index = index;
@@ -23,6 +25,7 @@ public class ListToImg extends Thread{
     }
     @Override
     public void run() {
+        Long startTime = System.currentTimeMillis();
         int toTry =0;
         ///  make it Tread
         Object tmp = null;
@@ -31,10 +34,10 @@ public class ListToImg extends Thread{
         String errorAddress="";
         Object object =null;
         int error = 0;
-        int success = 0;
         int index = 0;
         int attampt = 0;
         while ((tmp = original.pollLast()) != null){
+            toTry ++;
             object = tmp;
             Img obj = (Img) tmp;
             String title = obj.getTitle();
@@ -65,19 +68,33 @@ public class ListToImg extends Thread{
             }
 
             if(result==-1){
-//                imageMaker.delete();
                 original.addFirst(tmp);
-                total = original.size();
                 index --;
+                System.out.println("\ncode : not maked\nerror point : "+ title + chapter+ "/"+filename+"\n"+"address"+imageMaker.getAddress());
             }
-            if(percent > lastPercent) {
-                System.out.printf("code : %d\tcomplete making %s,%s (%d / %d) %s\n ",result,title, chapter, index, total, percent.toString()+"%" );
+            if(total <originalSize){
+                try {
+                    Thread.sleep(1000);
+
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+                System.out.printf("complete making %s,%s (remains : %d ) %s\n ",title, chapter, original.size(), percent.toString()+"%" );
                 lastPercent = percent;
-            } else{
-                System.out.printf("code : %d\tcomplete making %s,%s (%d / %d) \n ",result, title, chapter, index, total);
-            }
-            if(result==-1) System.out.println("\n\ncode : -1\nattampt : "+ chapter+ "/"+filename);
             if(result==1) success ++;
+            if((System.currentTimeMillis() - startTime)  > 3*60*1000 && toTry >= 100){
+                try {
+                    //3 분마다 10초 휴식, 50회당 10초 휴식
+                    toTry =0;
+                    startTime = System.currentTimeMillis();
+
+                    System.out.println("sleep for 10sec.");
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         super.interrupt();
         ///

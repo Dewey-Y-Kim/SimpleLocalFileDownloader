@@ -57,13 +57,14 @@ public class ControlFile {
         while (attempt<10 && isCorrptedImg() ) {
             if( retry){
                 file.delete();
-                System.out.println(file.getPath());
+//                System.out.println(file.getPath());
             }
 
 //            File chk = file;
             int i = 0;
             while(file.exists()){
                 file = new File(defaultPath+'/'+ fileName+"("+i+")."+ext);
+                fullfilePath = file.getAbsolutePath();
                 System.out.println(file.getName());
                 i++;
             }
@@ -87,7 +88,6 @@ public class ControlFile {
                     fileOutputStream.write(buffer, 0, idx);
                 }
                 fileOutputStream.flush();
-
             } catch (IOException e) {
                 new ReportError(new Object() {
                 }.getClass().getEnclosingClass().getName(),
@@ -222,5 +222,44 @@ public class ControlFile {
         } else {
             pathFile.delete();
         }
+    }
+    public int convertToWebp(){
+        // convert webp
+        String destination = defaultPath+"/"+fileName+".webp";
+        String convertToWebp = "convert "+ fullfilePath + " "+ destination;
+
+        String processResult = processBuilder(convertToWebp);
+        if( processResult.equals("")){
+            new File(fullfilePath).delete();
+            return 1;
+        }
+        if( processResult.contains("premature")){
+            new File(fullfilePath).delete();
+            new File(destination).delete();
+        }
+        return -1;
+    }
+    public String processBuilder(String operation){
+        String line = "";
+        try {
+            ProcessBuilder builder = new ProcessBuilder("sh", "-c",operation);
+
+            builder.redirectErrorStream(true); // 오류 출력도 함께 읽기
+            Process process = builder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String tempString = "";
+//            while ((tempString = reader.readLine()) != null) {
+//                line += tempString+"\n";
+//            }
+            line = reader.readLine();
+            reader.close();
+
+            int exitCode = process.waitFor(); // 프로세스 종료 대기
+//            System.out.println("Exit Code: " + exitCode);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return line;
     }
 }

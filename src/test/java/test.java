@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Properties;
 
 public class test {
     public static void main(String[] ag) {
@@ -114,5 +115,39 @@ public class test {
             e.printStackTrace();
             System.out.println(-1);;
         }
+    }
+    @Test
+    public void deleteTest(){
+        long time = System.currentTimeMillis();
+        processBuilder("ls");
+
+        System.out.println(System.currentTimeMillis() - time);
+//        File file = new File("/home/dewey/Projects/FileDownloader/31.webp");
+//            file.delete();
+//        String result = processBuilder("cd ~ && ls");
+//        System.out.println(result);
+//        processBuilder("ls");
+    }
+    public String processBuilder(String operation){
+        String line = "";
+        try {
+            ProcessBuilder builder = new ProcessBuilder("sh", "-c",operation);
+
+            builder.redirectErrorStream(true); // 오류 출력도 함께 읽기
+            Process process = builder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String tempString = "";
+            while ((tempString = reader.readLine()) != null) {
+                line += tempString+"\n";
+            }
+            reader.close();
+
+            int exitCode = process.waitFor(); // 프로세스 종료 대기
+            System.out.println("Exit Code: " + exitCode);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return line;
     }
 }

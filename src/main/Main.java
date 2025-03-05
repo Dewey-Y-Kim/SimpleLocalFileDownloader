@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 public class Main {
     public static void main(String[] args) throws IOException, URISyntaxException, ParseException {
         String[] arg = {
-                ""
+               
+
         };
         for (String str : arg){
             URI uri = new URI(str);
@@ -32,6 +33,7 @@ public class Main {
             switch (key){
                 case "hodu":
                     new ApiAccess(str).start();
+
                     break;
                 case "11to":
                     new Downloader(str).makeImg();

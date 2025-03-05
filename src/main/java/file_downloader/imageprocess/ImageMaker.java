@@ -6,6 +6,7 @@ import main.java.file_downloader.fileprocess.ReportError;
 import main.java.file_downloader.textprocess.ImageType;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,9 +52,11 @@ public class ImageMaker {
     public ImageMaker(String address, String title, String filename, ImageType imageType) {
         this(address, title, filename);
     }
-
+    public String getAddress(){
+        return address;
+    }
     public int make() throws IOException, InterruptedException {
-
+        int result =-1;
         attempt++;
         new ControlFile(defaultPath).chkpath();
             String ext = address.toLowerCase().substring(address.lastIndexOf(".")); //.jpg
@@ -78,9 +81,10 @@ public class ImageMaker {
 //                ControlFile controlFile = new ControlFile(fullfilePath, inputStream, retry);
                 ControlFile controlFile = new ControlFile(defaultPath,fileName,ext, inputStream, retry);
 
-                int attempt = 0;
-
                 controlFile.createFile();
+                result = controlFile.convertToWebp();
+//                int attempt = 0;
+
             } catch (NullPointerException e){
 //                Thread.sleep(2000);
                 return reportThis(e, fileName, address, fullfilePath);
@@ -97,11 +101,11 @@ public class ImageMaker {
 //                System.out.printf("[FileWriteError] Error occurs in %s ", fileName);
             }
             setDefault();
-            return 1;
+            return result;
     }
     private int reportThis(Exception e, String fileName, String address,String fullfilePath) {
         try {
-            if (attempt > 100) {
+            if (attempt > 10) {
                 new ReportError(new Object() {
                 }.getClass().getEnclosingClass().getName(), e.getClass().getName()  , "\n[FileWriteError] \n" + fileName + "\n"+address);
                 setDefault();

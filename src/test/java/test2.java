@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class test2{
     @Test
     public void test(){
-        String s = "\"og:title\" content=\"고블린 슬레이어 외전 : 이어 원\" />";
+        String s = "";
         Pattern pattern = Pattern.compile("(?>\"og:title\" content=\")(.*)\" />");
         Matcher matcher = pattern.matcher(s);
         if(matcher.find()){
