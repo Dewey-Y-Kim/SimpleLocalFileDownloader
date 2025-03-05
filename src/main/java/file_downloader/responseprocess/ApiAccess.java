@@ -192,6 +192,7 @@ public class ApiAccess {
         String toonTitle = String.valueOf(webtoon.get("toon_title"));
         error = toonTitle;
         String chapter = String.valueOf(viewData.get("view_title"));
+
         JSONArray view_image = (JSONArray) resultObj.get("view_image");
         for(int idx = 0 ; idx < view_image.size() ; idx++){
             String imgAddress = host + "/webtoondata/"+id+"/img/"+episode +"/"+ view_image.get(idx);

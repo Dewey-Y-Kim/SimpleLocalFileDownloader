@@ -11,6 +11,9 @@ public class ControlFile {
     String directoryPath = null;
     String fullfilePath = null;
     BufferedInputStream in = null;
+    String fileName;
+    String ext;
+    String defaultPath;
 
     public ControlFile(String path) {
         this.directoryPath = path;
@@ -35,6 +38,15 @@ public class ControlFile {
 
     }
 
+    public ControlFile(String defaultPath, String fileName, String ext, InputStream inputStream, boolean retry) {
+        String fullfilePath = defaultPath + "/" + fileName + ext;
+        this.fileName = fileName;
+        this.ext = ext;
+        this.defaultPath = defaultPath;
+        this(fullfilePath,inputStream,retry);
+
+    }
+
     public void setIn(InputStream in) {
         this.in = new BufferedInputStream(in);
     }
@@ -45,25 +57,34 @@ public class ControlFile {
         while (attempt<10 && isCorrptedImg() ) {
             if( retry){
                 file.delete();
+                System.out.println(file.getPath());
             }
-            if (file.exists()) {
-                break;
+
+//            File chk = file;
+            int i = 0;
+            while(file.exists()){
+                file = new File(defaultPath+'/'+ fileName+"("+i+")."+ext);
+                System.out.println(file.getName());
+                i++;
             }
+//            if (file.exists()) {
+//
+//            }
             try{
                 file.createNewFile();
             } catch (IOException e) {
 //            return false;
             // 최종 결과 확인을 위해. 만들계획은 없음.
             }
-            int i;
+            int idx;
             attempt++;
             FileOutputStream fileOutputStream = new FileOutputStream(fullfilePath);
 //            in.reset();
             try {
                 int bufferSize = 4096;
                 byte[] buffer = new byte[bufferSize];
-                while (((i = in.read(buffer)) != -1)) {
-                    fileOutputStream.write(buffer, 0, i);
+                while (((idx = in.read(buffer)) != -1)) {
+                    fileOutputStream.write(buffer, 0, idx);
                 }
                 fileOutputStream.flush();
 
@@ -76,8 +97,14 @@ public class ControlFile {
                 return false;
             } finally {
                 in.close();
+                file.getAbsolutePath();
             }
-
+//            if(file.length() > chk.length()){
+//                chk.delete();
+//            } else{
+//                file.delete();
+//                chk.renameTo(file);
+//            }
         }
         if(attempt==10) new ReportError(new Object() {
         }.getClass().getEnclosingClass().getName(), "\n" + file.getName() + "\n" + file.getAbsolutePath() + "\n", "err");

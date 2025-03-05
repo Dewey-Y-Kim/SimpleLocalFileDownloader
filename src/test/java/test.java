@@ -1,6 +1,8 @@
 package test.java;
 
 import main.java.file_downloader.connector.Connector;
+import main.java.file_downloader.responseprocess.ApiAccess;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
@@ -33,7 +35,7 @@ public class test {
         Connector connector;
         InputStream inputStream;
         try {
-            connector = new Connector("https://t60.hoduhodu.com/webtoondata/4803/img/1/image31.jpg");
+            connector = new Connector("");
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (URISyntaxException e) {
@@ -50,10 +52,34 @@ public class test {
             throw new RuntimeException(e);
         }
     }
+    @Test
+    public void testTread() throws URISyntaxException, IOException, ParseException {
+        String[] list ={};
+        String test ="";
+        String[] splited = test.split("/");
+        String chapter = splited[6];
+        System.out.println(splited[7].split("\\."));
+        String[] fullname = String.valueOf(splited[7]).split("\\.");
+        System.out.println(fullname.length);
+        System.out.println(fullname.length);
+        String filename = fullname[0];
+        
+//        filename = filename.replaceAll("image","");
+        String ext = fullname[1];
+        Connector connector = new Connector(test);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(connector.getInputstream());
+        int buffer = 8192;
+        int idx =0;
+        byte[] bytes = new byte[buffer];
 
+        FileWriter fileWriter = new FileWriter(new File("/home/dewey/"+chapter+"-"+filename+"."+ext));
+        while ( (idx = connector.getInputstream().read() ) !=-1){
+            fileWriter.write(idx);
+        }
+    }
     @Test
     public void testHead() throws IOException {
-        String fileURL = "https://t60.hoduhodu.com/webtoondata/14543/img/18/image1.jpg";
+        String fileURL = "";
         try {
             URL url = new URL(fileURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

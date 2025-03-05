@@ -124,10 +124,11 @@ public class TextTransform {
         return result;
     }
     public String lPad(String str,int size){
+        
         if( str.length() <= size){
             return  "0".repeat(size - str.length())+str;
         }
-        return "#".repeat(size);
+        return str;
     }
     public String getPercent(int i, int j){
         float head = (float) i;

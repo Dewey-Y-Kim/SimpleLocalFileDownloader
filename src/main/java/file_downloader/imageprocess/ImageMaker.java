@@ -52,13 +52,12 @@ public class ImageMaker {
         this(address, title, filename);
     }
 
-    public int make() throws IOException {
+    public int make() throws IOException, InterruptedException {
 
         attempt++;
         new ControlFile(defaultPath).chkpath();
             String ext = address.toLowerCase().substring(address.lastIndexOf(".")); //.jpg
             String fullfilePath = defaultPath + "/" + fileName + ext;
-
             fullfilePath.replaceAll("//", "/");
             try {
                 URL url;
@@ -76,12 +75,14 @@ public class ImageMaker {
                 InputStream inputStream = connection.getInputStream();
 
                 // 파일 생성
-                ControlFile controlFile = new ControlFile(fullfilePath, inputStream, retry);
+//                ControlFile controlFile = new ControlFile(fullfilePath, inputStream, retry);
+                ControlFile controlFile = new ControlFile(defaultPath,fileName,ext, inputStream, retry);
 
                 int attempt = 0;
 
                 controlFile.createFile();
             } catch (NullPointerException e){
+//                Thread.sleep(2000);
                 return reportThis(e, fileName, address, fullfilePath);
             } catch (FileNotFoundException e) {
                 return reportThis(e, fileName, address, fullfilePath);
@@ -102,7 +103,7 @@ public class ImageMaker {
         try {
             if (attempt > 100) {
                 new ReportError(new Object() {
-                }.getClass().getEnclosingClass().getName(), e.getClass().getName() + "\n[FileWriteError] \n" + fileName + "\n" + address + "\n", address);
+                }.getClass().getEnclosingClass().getName(), e.getClass().getName()  , "\n[FileWriteError] \n" + fileName + "\n"+address);
                 setDefault();
                 return -1;
             }
@@ -110,10 +111,11 @@ public class ImageMaker {
 
             // recursive
             make();
-        } catch (IOException err){
+        } catch (IOException | InterruptedException err){
 
         }
-        return 1;
+        setDefault();
+        return -1;
     }
     private void setDefault(){
         attempt =0;

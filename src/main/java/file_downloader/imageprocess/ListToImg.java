@@ -23,6 +23,7 @@ public class ListToImg extends Thread{
     }
     @Override
     public void run() {
+        int toTry =0;
         ///  make it Tread
         Object tmp = null;
         int originalSize= original.size();
@@ -31,16 +32,17 @@ public class ListToImg extends Thread{
         Object object =null;
         int error = 0;
         int success = 0;
+        int index = 0;
+        int attampt = 0;
         while ((tmp = original.pollLast()) != null){
-            index = total - original.size();
             object = tmp;
             Img obj = (Img) tmp;
             String title = obj.getTitle();
             String chapter = obj.getChapter();
             String filename = obj.getFilename();
             String path = obj.getPath();
-
             errorAddress = path;
+            index ++;
             Float percent = (float) ((Math.round((float) index / total * 1000))/1000)*100;
             ImageMaker imageMaker = null;
 
@@ -61,17 +63,21 @@ public class ListToImg extends Thread{
                     error ++;
                     reportErr(e, errorFile, errorAddress);
             }
+
             if(result==-1){
 //                imageMaker.delete();
-                original.add(tmp);
+                original.addFirst(tmp);
+                total = original.size();
+                index --;
             }
             if(percent > lastPercent) {
-                System.out.printf("complete making %s (%d / %d) %s\n ",title, total, total, percent.toString()+"%" );
+                System.out.printf("code : %d\tcomplete making %s,%s (%d / %d) %s\n ",result,title, chapter, index, total, percent.toString()+"%" );
                 lastPercent = percent;
             } else{
-                System.out.printf("complete making %s (%d / %d) \n ",title, index, total);
+                System.out.printf("code : %d\tcomplete making %s,%s (%d / %d) \n ",result, title, chapter, index, total);
             }
-            success ++;
+            if(result==-1) System.out.println("\n\ncode : -1\nattampt : "+ chapter+ "/"+filename);
+            if(result==1) success ++;
         }
         super.interrupt();
         ///
