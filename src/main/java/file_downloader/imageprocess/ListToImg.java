@@ -62,39 +62,34 @@ public class ListToImg extends Thread{
             try{
                 result=imageMaker.make();
             }  catch (Exception e){
-//                    System.out.println( object);
                     error ++;
                     reportErr(e, errorFile, errorAddress);
             }
 
             if(result==-1){
-                original.addFirst(tmp);
+
+                original.addFirst(obj);
                 index --;
-                System.out.println("\ncode : not maked\nerror point : "+ title + chapter+ "/"+filename+"\n"+"address"+imageMaker.getAddress());
-            }
-            if(total <originalSize){
-                try {
-                    Thread.sleep(1000);
+                System.out.println("\ncode : not maked\nerror point : "+ title + chapter+ "/"+filename+"\n"+"address :"+imageMaker.getAddress());
 
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
             }
-                System.out.printf("complete making %s,%s (remains : %d ) %s\n ",title, chapter, original.size(), percent.toString()+"%" );
+            if(result == 1) {
+                System.out.printf("complete making %s,%s (remains : %d )\n ",title, chapter, original.size(), percent.toString()+"%" );
                 lastPercent = percent;
-            if(result==1) success ++;
-            if((System.currentTimeMillis() - startTime)  > 3*60*1000 && toTry >= 100){
-                try {
-                    //3 분마다 10초 휴식, 50회당 10초 휴식
-                    toTry =0;
-                    startTime = System.currentTimeMillis();
-
-                    System.out.println("sleep for 10sec.");
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                success ++;
             }
+//            if((System.currentTimeMillis() - startTime)  > 3*60*1000 && toTry >= 100){
+//                try {
+//                    //3 분마다 10초 휴식, 50회당 10초 휴식
+//                    toTry =0;
+//                    startTime = System.currentTimeMillis();
+//
+//                    System.out.println("sleep for 10sec.");
+//                    Thread.sleep(10000);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
         }
         super.interrupt();
         ///

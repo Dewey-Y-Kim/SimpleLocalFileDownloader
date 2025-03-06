@@ -14,29 +14,6 @@ import java.util.regex.Pattern;
 public class Main {
     public static void main(String[] args) throws IOException, URISyntaxException, ParseException {
         String[] arg = {
-                "https://t61.hoduhodu.com/webtoon/13979", //뒷계정트랩
-                "https://t61.hoduhodu.com/webtoon/7182", //오늘부터최애
-//                "https://t61.hoduhodu.com/webtoon/13438", //스위치
-//                "https://t61.hoduhodu.com/webtoon/3541", //클럽
-//                "https://t61.hoduhodu.com/webtoon/4238" , //펫
-//                "https://t61.hoduhodu.com/webtoon/1408" , //오피스
-//                "https://t61.hoduhodu.com/webtoon/1873", //보는남자
-//                "https://t61.hoduhodu.com/webtoon/3012", //교실
-//                "https://t61.hoduhodu.com/webtoon/3839", //교사
-//                "https://t61.hoduhodu.com/webtoon/4569", //징벌
-//                "https://t61.hoduhodu.com/webtoon/3807", //충전
-//                "https://t61.hoduhodu.com/webtoon/4709",     //가짜였다
-//                "https://t61.hoduhodu.com/webtoon/4744", //해변의
-//                "https://t61.hoduhodu.com/webtoon/11171", //이세계최
-//                "https://t61.hoduhodu.com/webtoon/7045", //주파수
-//                "https://t61.hoduhodu.com/webtoon/7112", //구속
-//                "https://t61.hoduhodu.com/webtoon/6924", //옐프
-//                "https://t61.hoduhodu.com/webtoon/4751", // 쑬싸
-//                "https://t61.hoduhodu.com/webtoon/5065", //요마서유
-//                "https://t61.hoduhodu.com/webtoon/7210", //여기에
-//                "https://t61.hoduhodu.com/webtoon/12707", //성지도
-//                "https://t61.hoduhodu.com/webtoon/6079", //최면사
-//                "https://t61.hoduhodu.com/webtoon/7315" //로판악녀
 
         };
         for (String str : arg){

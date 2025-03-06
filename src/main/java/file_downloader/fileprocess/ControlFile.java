@@ -51,13 +51,13 @@ public class ControlFile {
         this.in = new BufferedInputStream(in);
     }
 
-    public boolean createFile() throws IOException {
-
-        int attempt =0;
-        while (attempt<10 && isCorrptedImg() ) {
+    public int createFile() throws IOException {
+        if(file.exists()) file.delete();
+//        int attempt =0;
+//        while (attempt<10 && isCorrptedImg() ) {
             if( retry){
                 file.delete();
-//                System.out.println(file.getPath());
+                System.out.println(file.getPath());
             }
 
 //            File chk = file;
@@ -78,9 +78,8 @@ public class ControlFile {
             // 최종 결과 확인을 위해. 만들계획은 없음.
             }
             int idx;
-            attempt++;
+//            attempt++;
             FileOutputStream fileOutputStream = new FileOutputStream(fullfilePath);
-//            in.reset();
             try {
                 int bufferSize = 4096;
                 byte[] buffer = new byte[bufferSize];
@@ -88,26 +87,20 @@ public class ControlFile {
                     fileOutputStream.write(buffer, 0, idx);
                 }
                 fileOutputStream.flush();
+                fileOutputStream.close();
             } catch (IOException e) {
                 new ReportError(new Object() {
                 }.getClass().getEnclosingClass().getName(),
                         e.getClass().getName() + "\n" + "[Create File]",
                         fullfilePath);
                 file.delete();
-                return false;
+                return -1;
             } finally {
                 in.close();
                 file.getAbsolutePath();
             }
-//            if(file.length() > chk.length()){
-//                chk.delete();
-//            } else{
-//                file.delete();
-//                chk.renameTo(file);
-//            }
-        }
-        if(attempt==10) new ReportError(new Object() {
-        }.getClass().getEnclosingClass().getName(), "\n" + file.getName() + "\n" + file.getAbsolutePath() + "\n", "err");
+//        }
+//        if(attempt==10) new ReportError(new Object() {}.getClass().getEnclosingClass().getName(), "\n" + file.getName() + "\n" + file.getAbsolutePath() + "\n", "err");
 
 
 //        BufferedImage image=null;
@@ -136,7 +129,7 @@ public class ControlFile {
 //                        null), writeParam);
 //        jpegImageWriter.dispose();
 //        imageOutputStream.close();
-        return true;
+        return convertToWebp();
     }
 
     public boolean isCorrptedImg() {
@@ -226,16 +219,47 @@ public class ControlFile {
     public int convertToWebp(){
         // convert webp
         String destination = defaultPath+"/"+fileName+".webp";
-        String convertToWebp = "convert "+ fullfilePath + " "+ destination;
+        String operation = "convert '" + fullfilePath + "' '" + fullfilePath.substring(0,fullfilePath.length() - 4)+".webp'";
 
-        String processResult = processBuilder(convertToWebp);
-        if( processResult.equals("")){
+        StringBuilder line = new StringBuilder();
+        int exitCode= -1;
+        try {
+            ProcessBuilder builder = new ProcessBuilder("sh", "-c", operation);
+
+            builder.redirectErrorStream(true); // 오류 출력도 함께 읽기
+            Process process = builder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String tempString = "";
+            while ((tempString =reader.readLine())!=null){
+                line.append(tempString);
+                line.append("\n");
+//                System.out.println( tempString);
+            }
+            reader.close();
+
+            exitCode = process.waitFor(); // 프로세스 종료 대기
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+//        System.out.println(line.toString().contains("exceeds"));
+        if( exitCode==0 && (line.toString()==null || line.toString().isEmpty())){
             new File(fullfilePath).delete();
             return 1;
         }
-        if( processResult.contains("premature")){
+        if( exitCode !=-1 && line.toString().contains("exceeds")){
+            File webp = new File(fullfilePath.substring(-4)+".webp");
+            File jpg = new File(fullfilePath);
+            if(webp.delete()){
+                jpg.renameTo(webp);
+            }
+
+            return 1;
+        }
+        if( exitCode == 0 && line.toString().contains("premature")){
             new File(fullfilePath).delete();
-            new File(destination).delete();
+            new File(fullfilePath.substring(-4)+".webp").delete();
         }
         return -1;
     }
@@ -256,7 +280,7 @@ public class ControlFile {
             reader.close();
 
             int exitCode = process.waitFor(); // 프로세스 종료 대기
-//            System.out.println("Exit Code: " + exitCode);
+            System.out.println("Exit Code: " + exitCode);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

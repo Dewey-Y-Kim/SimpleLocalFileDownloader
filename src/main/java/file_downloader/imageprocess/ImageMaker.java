@@ -81,8 +81,8 @@ public class ImageMaker {
 //                ControlFile controlFile = new ControlFile(fullfilePath, inputStream, retry);
                 ControlFile controlFile = new ControlFile(defaultPath,fileName,ext, inputStream, retry);
 
-                controlFile.createFile();
-                result = controlFile.convertToWebp();
+                result = controlFile.createFile();
+//                result = controlFile.convertToWebp();
 //                int attempt = 0;
 
             } catch (NullPointerException e){

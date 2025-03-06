@@ -1,5 +1,6 @@
 package test.java;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import main.java.file_downloader.connector.Connector;
 import main.java.file_downloader.responseprocess.ApiAccess;
 import org.json.simple.parser.ParseException;
@@ -118,15 +119,49 @@ public class test {
     }
     @Test
     public void deleteTest(){
-        long time = System.currentTimeMillis();
-        processBuilder("ls");
+        File webp = new File("");
 
-        System.out.println(System.currentTimeMillis() - time);
-//        File file = new File("/home/dewey/Projects/FileDownloader/31.webp");
-//            file.delete();
-//        String result = processBuilder("cd ~ && ls");
+        File jpg = new File("");
+        String convert = "convert '"+jpg+"' '"+webp+"'";
+        String line = "";
+        int exitCode =-1;
+        System.out.println(convert);
+        try {
+            ProcessBuilder builder = new ProcessBuilder("sh", "-c",convert);
+
+            builder.redirectErrorStream(true); // 오류 출력도 함께 읽기
+            Process process = builder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String tempString = "";
+            while ((tempString = reader.readLine()) != null) {
+                line += tempString+"\n";
+            }
+            reader.close();
+
+            exitCode = process.waitFor(); // 프로세스 종료 대기
+            System.out.println("Exit Code: " + exitCode);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        String result = processBuilder(convert);
 //        System.out.println(result);
-//        processBuilder("ls");
+        if(exitCode == 1 && line.contains("exceeds")){
+            System.out.println("delete:");
+//            "convert-im6.q16: unable to open image `/home/dewey/Downloads/books/imgDownloader/육체의 교실/35화/1.jpg': No such file or directory @ error/blob.c/OpenBlob/2964.\n" +
+//                    "convert-im6.q16: no images defined `/home/dewey/Downloads/books/imgDownloader/육체의 교실/35화/1.webp' @ error/convert.c/ConvertImageCommand/3234.\n"
+
+            if(webp.delete()){
+                System.out.println("success");
+                jpg.renameTo(webp);
+            }else{
+                System.out.println("failed");
+            }
+//            webp.delete();
+            
+//            jpg.renameTo(webp);
+        }
+        System.out.println(webp.exists());
     }
     public String processBuilder(String operation){
         String line = "";

@@ -158,6 +158,7 @@ public class ApiAccess {
         JSONObject content = (JSONObject) new JSONParser().parse(String.valueOf(resultObj.get("content")));
         String novel_title = String.valueOf(novel.get("novel_title"));
         String chapter = String.valueOf(listData.get("novel_list_title"));
+//        chapter = new TextTransform().lPad(chapter)
         String novel_list_episode = String.valueOf(listData.get("novel_list_episode"));
         String data = String.valueOf(content.get("data"));
 
