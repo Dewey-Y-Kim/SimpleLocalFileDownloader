@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 public class ApiAccess {
     String address;
     String title;
+    int numberOfepisode = 0;
     public ApiAccess(String address){
         this.address = address;
     }
@@ -35,7 +36,7 @@ public class ApiAccess {
         String type = apiresult.getFirst().getClass().getName().replaceAll("(.*)\\.","");
         switch(type){
             case "TextData": textDataProcess(apiresult);break;
-            case "Img" : new ImgProcess().makeImg(apiresult);break;
+            case "Img" : new ImgProcess().makeImg(apiresult, numberOfepisode);break;
         }
     }
 
@@ -72,8 +73,8 @@ public class ApiAccess {
                     ResultObj obj = (ResultObj) iterator.next();
                     List getImgPathResult = getImgPath(host,id, obj.getEpisode());
                     thisResult.addAll(getImgPathResult);
+                    numberOfepisode++;
                     System.out.println(obj.getChapterTitle()+ " is loaded");
-
                 }
 
                 break;
@@ -134,22 +135,25 @@ public class ApiAccess {
             JSONObject obj = (JSONObject) iterator.next();
             String listEpisode = String.valueOf( obj.get(defaultData[0]));
             String listTitle = String.valueOf(obj.get(defaultData[1]));
-            ResultObj resultobj = new ResultObj(title, type, id, listEpisode, listTitle, endpoint);
+            ResultObj resultobj = new ResultObj(title, type, id, listEpisode, listTitle, endpoint, listArray.size());
             episodeList.add(resultobj);
         }
       return episodeList;
     }
     private TextData getTextdata(String textApiAddress) throws IOException, URISyntaxException, ParseException {
-        Connector connector;
+        Connector connector = null;
         String result ="";
         String error = title;
-        try {
-            connector = new Connector(textApiAddress);
-            result = connector.getResult();
-        }catch (IOException e){
-            new ReportError(new Object(){}.getClass().getEnclosingClass().getName(),"[getImgPath]["+e.getClass().getName() + "]\n"+e, error+"\n");
-
+        while(connector == null && result.isEmpty()) {
+            try {
+                connector = new Connector(textApiAddress);
+                result = connector.getResult();
+            } catch (IOException e) {
+                new ReportError(new Object() {
+                }.getClass().getEnclosingClass().getName(), "[getImgPath][" + e.getClass().getName() + "]\n" + e, error + "\n");
+            }
         }
+
         JSONObject resultObj = (JSONObject) new JSONParser().parse(result);
 
         JSONArray temp = (JSONArray) new JSONParser().parse(String.valueOf(resultObj.get("listData")));
@@ -158,11 +162,12 @@ public class ApiAccess {
         JSONObject content = (JSONObject) new JSONParser().parse(String.valueOf(resultObj.get("content")));
         String novel_title = String.valueOf(novel.get("novel_title"));
         String chapter = String.valueOf(listData.get("novel_list_title"));
-//        chapter = new TextTransform().lPad(chapter)
         String novel_list_episode = String.valueOf(listData.get("novel_list_episode"));
         String data = String.valueOf(content.get("data"));
-
-        data = data.replaceAll("<(/?)p>","\n").replaceAll(chapter,"").replaceAll("\r\n","\n").replaceAll("\n(\n+)","\n");
+        data = data.replaceAll("<(/?)p>","\n")
+//                .replace(chapter,"")
+                .replaceAll("\r\n","\n")
+                .replaceAll("\n(\n+)","\n");
         data = setChapter(chapter) + data;
         return new TextData(novel_title, novel_list_episode, chapter, data);
     }

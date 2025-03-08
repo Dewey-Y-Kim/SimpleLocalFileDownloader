@@ -7,6 +7,7 @@ public class Img {
     String chapter;
     int idx;
     String filename;
+    int attampt = 0;
     public Img(String title, String chapter, String path,int idx, String filename){
         this.title = title;
         this.chapter = chapter;
@@ -37,6 +38,14 @@ public class Img {
 
     public String getFilename() {
         return filename;
+    }
+
+    public int getAttampt() {
+        return attampt;
+    }
+
+    public void setAttampt(int attampt) {
+        this.attampt = attampt;
     }
 
     @Override

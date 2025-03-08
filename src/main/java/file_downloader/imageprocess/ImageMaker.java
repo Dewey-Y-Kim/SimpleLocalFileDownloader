@@ -2,6 +2,7 @@ package main.java.file_downloader.imageprocess;
 
 import main.java.file_downloader.ReadProperty;
 import main.java.file_downloader.fileprocess.ControlFile;
+import main.java.file_downloader.fileprocess.ReportCheckList;
 import main.java.file_downloader.fileprocess.ReportError;
 import main.java.file_downloader.textprocess.ImageType;
 
@@ -23,6 +24,7 @@ public class ImageMaker {
     private String chapter;
     private boolean retry = false;
     private int attempt = 0;
+
     public ImageMaker(String address, String fileName) {
         this.address = address;
         this.fileName = fileName;

@@ -219,8 +219,9 @@ public class ControlFile {
     public int convertToWebp(){
         // convert webp
         String destination = defaultPath+"/"+fileName+".webp";
-        String operation = "convert '" + fullfilePath + "' '" + fullfilePath.substring(0,fullfilePath.length() - 4)+".webp'";
+//        String operation = "convert '" + fullfilePath + "' '" + fullfilePath.substring(0,fullfilePath.length() - 4)+".webp'";
 
+        String operation = "cwebp '" + fullfilePath + "' -o '" + fullfilePath.substring(0,fullfilePath.length() - 4)+".webp'";
         StringBuilder line = new StringBuilder();
         int exitCode= -1;
         try {
@@ -243,26 +244,44 @@ public class ControlFile {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-//        System.out.println(line.toString().contains("exceeds"));
-        if( exitCode==0 && (line.toString()==null || line.toString().isEmpty())){
-            new File(fullfilePath).delete();
-            return 1;
-        }
-        if( exitCode !=-1 && line.toString().contains("exceeds")){
-            File webp = new File(fullfilePath.substring(-4)+".webp");
-            File jpg = new File(fullfilePath);
-            if(webp.delete()){
-                jpg.renameTo(webp);
-            }
 
+//        System.out.println(line.toString().contains("exceeds"));
+//        if( exitCode==0 && (line.toString()==null || line.toString().isEmpty())){
+//            new File(fullfilePath).delete();
+//            return 1;
+//        }
+//        System.out.printf("%s\n%s\n%s\n%s\n",fullfilePath,line, exitCode,"-".repeat(10));
+//        if( exitCode !=-1 && line.toString().contains("exceeds")){
+////            File webp = new File(fullfilePath.substring(-4)+".webp");
+////            File jpg = new File(fullfilePath);
+////            if(webp.delete()){
+////                jpg.renameTo(webp);
+////            }
+//
+//            return 1;
+//        }
+//        if( exitCode == 0 && line.toString().contains("premature")){
+//            new File(fullfilePath).delete();
+//            new File(fullfilePath.substring(-4)+".webp").delete();
+//        }
+        if(exitCode == 0){
+            new File(fullfilePath).delete();
             return 1;
         }
-        if( exitCode == 0 && line.toString().contains("premature")){
-            new File(fullfilePath).delete();
-            new File(fullfilePath.substring(-4)+".webp").delete();
+        if(line.toString().contains("Maximum")){
+            new File(fullfilePath.substring(0,fullfilePath.length() - 4)+".webp").delete();
+            try {
+                new ReportCheckList("[check Long Image]"+fullfilePath);
+            } catch (IOException e) {
+
+            }
+            return 1;
         }
+        new File(fullfilePath.substring(0,fullfilePath.length() - 4)+".webp").delete();
+
         return -1;
     }
+
     public String processBuilder(String operation){
         String line = "";
         try {

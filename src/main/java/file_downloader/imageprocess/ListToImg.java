@@ -1,7 +1,9 @@
 package main.java.file_downloader.imageprocess;
 
 import main.java.file_downloader.domain.Img;
+import main.java.file_downloader.fileprocess.ReportCheckList;
 import main.java.file_downloader.fileprocess.ReportError;
+import main.java.file_downloader.textprocess.TextTransform;
 
 import java.io.IOException;
 import java.util.Deque;
@@ -17,11 +19,14 @@ public class ListToImg extends Thread{
     int complete = 0;
     int total = 0;
     int success =0;
-    public ListToImg(Queue<Img> queue,Integer index, Float lastPercent, int total){
+    int paddingNumber = 0;
+    public ListToImg(Queue<Img> queue, Integer index, Float lastPercent, int total, int paddingNumber){
         this.original = (Deque) queue;
         this.index = index;
         this.lastPercent = lastPercent;
         this.total = total;
+        this.paddingNumber=paddingNumber;
+
     }
     @Override
     public void run() {
@@ -36,21 +41,25 @@ public class ListToImg extends Thread{
         int error = 0;
         int index = 0;
         int attampt = 0;
+        int sizeLength = String.valueOf(originalSize).length();
+        String title ="";
         while ((tmp = original.pollLast()) != null){
             toTry ++;
             object = tmp;
             Img obj = (Img) tmp;
-            String title = obj.getTitle();
+            obj.setAttampt(obj.getAttampt()+1);
+            title = obj.getTitle();
             String chapter = obj.getChapter();
             String filename = obj.getFilename();
             String path = obj.getPath();
+
             errorAddress = path;
             index ++;
             Float percent = (float) ((Math.round((float) index / total * 1000))/1000)*100;
             ImageMaker imageMaker = null;
 
             try {
-                imageMaker = new ImageMaker(path, title, chapter, filename);
+                imageMaker = new ImageMaker(path, title, new TextTransform().lPad(chapter, paddingNumber), filename);
             }catch (UnknownFormatConversionException e){
                 try {
                     new ReportError(new Object(){}.getClass().getEnclosingClass().getName(),e.getClass().getName()+"\n" + errorFile,"[new ImageMaker(path, title, chapter, filename)]\n"+e.getClass().getName()+"\n" + errorFile +"\n\n"+errorAddress);
@@ -68,28 +77,30 @@ public class ListToImg extends Thread{
 
             if(result==-1){
 
-                original.addFirst(obj);
+                if(obj.getAttampt()<20) {
+                    original.addFirst(obj);
+                } else{
+                    try {
+                        new ReportCheckList("[Error image load attampt over 10 times]\n+error point : " + title + chapter + "/" + filename + "\n" + "address :" + imageMaker.getAddress());
+                    } catch (IOException e) {
+//                    throw new RuntimeException(e);
+                    }
+                }
                 index --;
-                System.out.println("\ncode : not maked\nerror point : "+ title + chapter+ "/"+filename+"\n"+"address :"+imageMaker.getAddress());
+                System.out.println("-".repeat(10)+"\ncode : not maked\nerror point : "+ title + chapter+ "/"+filename+"\n"+"address :"+imageMaker.getAddress()+"\n"+"-".repeat(10));
 
             }
             if(result == 1) {
-                System.out.printf("complete making %s,%s (remains : %d )\n ",title, chapter, original.size(), percent.toString()+"%" );
+                System.out.printf("complete making %s\t%s\t%s (remains : %d )\n ",title, chapter, filename, original.size(), percent.toString()+"%" );
                 lastPercent = percent;
                 success ++;
             }
-//            if((System.currentTimeMillis() - startTime)  > 3*60*1000 && toTry >= 100){
-//                try {
-//                    //3 분마다 10초 휴식, 50회당 10초 휴식
-//                    toTry =0;
-//                    startTime = System.currentTimeMillis();
-//
-//                    System.out.println("sleep for 10sec.");
-//                    Thread.sleep(10000);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
+
+        }
+        try {
+            new ReportCheckList(title);
+        } catch (IOException e) {
+//            throw new RuntimeException(e);
         }
         super.interrupt();
         ///

@@ -16,6 +16,8 @@ import java.util.*;
 public class ImgProcess implements ImageProcesser{
     String address = "";
     String title = "";
+    private int paddingNumber;
+
     public ImgProcess(){
 
     }
@@ -199,8 +201,8 @@ public class ImgProcess implements ImageProcesser{
         Integer idx = 0;
         Float percent = (float) 0;
         int numberOfItem = original.size();
-        for ( int i  = 0; i < Runtime.getRuntime().availableProcessors() /3 *2; i++){
-            new ListToImg(original, idx, percent, numberOfItem).start();
+        for ( int i  = 0; i < Runtime.getRuntime().availableProcessors() +1; i++){
+            new ListToImg(original, idx, percent, numberOfItem, paddingNumber+1).start();
         }
     }
     public String getAddress(String originalTag){
@@ -209,5 +211,10 @@ public class ImgProcess implements ImageProcesser{
         String result = new TextTransform().patternMaker(regex, str).replaceFirst("'.","").replaceAll("'","");
 
         return address.substring(0,address.indexOf(result.substring(0,5))) + result;
+    }
+
+    public void makeImg(List apiresult, int numberOfepisode) {
+        paddingNumber = String.valueOf(numberOfepisode).length();
+        makeImg(apiresult);
     }
 }

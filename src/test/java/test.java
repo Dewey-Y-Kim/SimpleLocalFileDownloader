@@ -2,6 +2,8 @@ package test.java;
 
 import jdk.swing.interop.SwingInterOpUtils;
 import main.java.file_downloader.connector.Connector;
+import main.java.file_downloader.fileprocess.ReportCheckList;
+import main.java.file_downloader.fileprocess.ReportError;
 import main.java.file_downloader.responseprocess.ApiAccess;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -17,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 public class test {
     public static void main(String[] ag) {
@@ -179,10 +182,13 @@ public class test {
             reader.close();
 
             int exitCode = process.waitFor(); // 프로세스 종료 대기
+            System.out.println(line);
+            System.out.println(line.contains("Maximum"));
             System.out.println("Exit Code: " + exitCode);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
         return line;
     }
+
 }
