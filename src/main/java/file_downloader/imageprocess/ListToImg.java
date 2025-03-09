@@ -98,7 +98,7 @@ public class ListToImg extends Thread{
 
         }
         try {
-            new ReportCheckList(title);
+            new ReportCheckList(title+"\n");
         } catch (IOException e) {
 //            throw new RuntimeException(e);
         }

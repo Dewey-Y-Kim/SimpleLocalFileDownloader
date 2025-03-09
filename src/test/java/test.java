@@ -1,25 +1,15 @@
 package test.java;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import main.java.file_downloader.connector.Connector;
-import main.java.file_downloader.fileprocess.ReportCheckList;
-import main.java.file_downloader.fileprocess.ReportError;
-import main.java.file_downloader.responseprocess.ApiAccess;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Properties;
-import java.util.regex.Pattern;
 
 public class test {
     public static void main(String[] ag) {

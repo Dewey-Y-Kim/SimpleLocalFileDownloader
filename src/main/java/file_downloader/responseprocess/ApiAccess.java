@@ -1,6 +1,7 @@
 package main.java.file_downloader.responseprocess;
 
 import main.java.file_downloader.connector.Connector;
+import main.java.file_downloader.connector.ExcutorSet;
 import main.java.file_downloader.domain.Img;
 import main.java.file_downloader.domain.ResultObj;
 import main.java.file_downloader.domain.TextData;
@@ -33,10 +34,11 @@ public class ApiAccess {
 
     public void start() throws URISyntaxException, IOException, ParseException {
         List apiresult = apiRead(address);
+        ExcutorSet excutorSet = new ExcutorSet(6);
         String type = apiresult.getFirst().getClass().getName().replaceAll("(.*)\\.","");
         switch(type){
             case "TextData": textDataProcess(apiresult);break;
-            case "Img" : new ImgProcess().makeImg(apiresult, numberOfepisode);break;
+            case "Img" : new ImgProcess( excutorSet.getService()).makeImg(apiresult, numberOfepisode);break;
         }
     }
 
@@ -80,9 +82,22 @@ public class ApiAccess {
                 break;
             case "novel" :
                 while(iterator.hasNext() ){
+                    boolean failed = true;
+
                     ResultObj obj = (ResultObj) iterator.next();
-                    TextData textData = getTextdata(obj.getPath());
-                    thisResult.add(textData);
+                    //로딩 시 에러
+                    while(failed){
+                        TextData textData = null;
+                        try{
+                            textData = getTextdata(obj.getPath());
+                            failed = false;
+
+                        } catch (Exception e){
+                            e.printStackTrace();
+                            failed =true;
+                        }
+                        if(!failed) thisResult.add(textData);
+                    }
                     System.out.println(obj.getChapterTitle()+ " is loaded");
                 }
                 break;

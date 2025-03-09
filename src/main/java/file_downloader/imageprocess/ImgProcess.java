@@ -12,17 +12,19 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 public class ImgProcess implements ImageProcesser{
     String address = "";
     String title = "";
     private int paddingNumber;
-
-    public ImgProcess(){
-
-    }
+    ExecutorService executorService;
     public ImgProcess(String address){
         this.address = address;
+    }
+
+    public ImgProcess(ExecutorService service) {
+        this.executorService = service;
     }
 
     public List makeImageList() throws IOException {
@@ -201,8 +203,15 @@ public class ImgProcess implements ImageProcesser{
         Integer idx = 0;
         Float percent = (float) 0;
         int numberOfItem = original.size();
-        for ( int i  = 0; i < Runtime.getRuntime().availableProcessors() +1; i++){
-            new ListToImg(original, idx, percent, numberOfItem, paddingNumber+1).start();
+        if( executorService != null){
+            for (int i=0; i< Runtime.getRuntime().availableProcessors(); i++ ){
+                executorService.submit(new ListToImg(original, idx, percent, numberOfItem, paddingNumber + 1));
+            }
+            executorService.shutdown();
+        }else{
+            for (int i = 0; i < Runtime.getRuntime().availableProcessors() + 1; i++) {
+                new ListToImg(original, idx, percent, numberOfItem, paddingNumber + 1).start();
+            }
         }
     }
     public String getAddress(String originalTag){
@@ -217,4 +226,6 @@ public class ImgProcess implements ImageProcesser{
         paddingNumber = String.valueOf(numberOfepisode).length();
         makeImg(apiresult);
     }
+
+
 }

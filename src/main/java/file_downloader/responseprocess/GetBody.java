@@ -49,12 +49,17 @@ public class GetBody {
 
     // 목록에서 제목과 그 url 가져오기
     private void setList(){
+        setList("toon_index");// keyword of ul.. if book  keyword = "list-body"
+        // <a[^>]*class="item-subject"[^>]*>(.*?)</a>
+        // <a[^>]*href="([^"]*)"[^>]*> href="???" ->???
+    }
+    private void setList(String keyword){
         List<String> result = new ArrayList<>();
         List<String> temp = new ArrayList<>();
         Pattern urlPattern = Pattern.compile("href=\"(.*?)\"");
         Pattern titlePattern = Pattern.compile("</i>(.*?)<span");
         boolean found = false;
-        String keyword = "toon_index";
+//        String keyword = "toon_index";
         for(String str : originalTxt){
 
             str.replaceAll("\t","").replaceAll("\\t","");
